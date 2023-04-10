@@ -5,8 +5,8 @@ data_file="edge.dat"
 output_file="map.png"
 x_label="Latitude"
 y_label="Longitude"
-x_range="0:20"
-y_range="0:20"
+x_range="0:10"
+y_range="0:10"
 
 # Start Gnuplot
 gnuplot << EOF
