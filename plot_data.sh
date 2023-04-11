@@ -5,8 +5,20 @@ data_file="edge.dat"
 output_file="map.png"
 x_label="Latitude"
 y_label="Longitude"
-x_range="0:10"
-y_range="0:10"
+
+# Set default values for x_range and y_range
+default_x_range="-1.565:-1.54"
+default_y_range="53.801:53,812"
+if [ -f "range_x.txt" ]; then
+    x_range=$(cat range_x.txt)
+else
+    x_range=$default_x_range
+fi
+if [ -f "range_y.txt" ]; then
+    y_range=$(cat range_y.txt)
+else
+    y_range=$default_y_range
+fi
 
 # Start Gnuplot
 gnuplot << EOF

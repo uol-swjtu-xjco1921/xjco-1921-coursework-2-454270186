@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -std=c99
 LDFLAGS =
 
 TARGET = main
-SRCS = main.c fileio.c
+SRCS = main.c fileio.c errhandler.c script.c vector.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all clean

@@ -2,28 +2,29 @@
 #define _MODELS
 #include <stdint.h>
 
-typedef struct node {
+typedef struct {
     int64_t id;
     double lat;
     double lon;
-} node;
+} Node;
 
-typedef struct edge {
+typedef struct {
     int64_t id;
-    node from;
-    node to;
+    int64_t from;
+    int64_t to;
     int32_t way;
     double length;
     double veg;
     double arch;
+    double land;
     int32_t POI;
-} edge;
+} Edge;
 
-typedef struct bound {
+typedef struct {
     double min_lat;
     double max_lat;
     double min_lon;
     double max_lon;
-} bound;
+} Bound;
 
 #endif
