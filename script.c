@@ -10,7 +10,7 @@ int set_range(Bound* bd) {
         return -1;
     }
 
-    fprintf(xscript, "%lf:%lf\n", bd->min_lon, bd->max_lon);
+    fprintf(xscript, "%lf:%lf\n", bd->min_lon-0.001, bd->max_lon+0.001);
     fclose(xscript);
 
     // y_range
@@ -20,7 +20,7 @@ int set_range(Bound* bd) {
         return -1;
     }
 
-    fprintf(yscript, "%lf:%lf\n", bd->min_lat, bd->max_lat);
+    fprintf(yscript, "%lf:%lf\n", bd->min_lat-0.001, bd->max_lat+0.001);
     fclose(yscript);
 
     return 0;

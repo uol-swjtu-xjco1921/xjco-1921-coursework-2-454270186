@@ -2,10 +2,11 @@
 #define _MODELS
 #include <stdint.h>
 
-typedef struct {
+typedef struct _node{
     int64_t id;
     double lat;
     double lon;
+    struct _node* next;
 } Node;
 
 typedef struct {

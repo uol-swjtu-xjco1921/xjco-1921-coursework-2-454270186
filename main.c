@@ -2,33 +2,24 @@
 #include <stdlib.h>
 #include "fileio.h"
 #include "script.h"
+#include "hashtable.h"
+#include "drawer.h"
 
 int main() {
     Bound bd;
     edge_vector edges;
-    node_vector nodes;
+    Node* node_table[TABLE_SIZE] = {NULL};
 
     e_vector_init(&edges, 10);
-    n_vector_init(&nodes, 10);
 
-    read_file("leeds.map", &nodes, &edges, &bd);
-
-    printf("%lf %lf %lf %lf\n", bd.min_lon, bd.min_lat, bd.max_lon, bd.max_lat);
+    read_file("leeds.map", node_table, &edges, &bd);
     
-    for (int i = 0; i < edges.size; i++) {
-        printf("edge %d: %ld\n", i, edges.edges[i].id);
-    }
-
-    for (int i = 0; i < nodes.size; i++) {
-        printf("node %d: %ld\n", i, nodes.nodes[i].id);
-    }
-
     set_range(&bd);
+    input_edges(&edges, node_table);
 
     system("bash ./plot_data.sh");
 
     e_vector_free(&edges);
-    n_vector_free(&nodes);
 
     return 0;
 }

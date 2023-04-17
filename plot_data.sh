@@ -7,8 +7,8 @@ x_label="Latitude"
 y_label="Longitude"
 
 # Set default values for x_range and y_range
-default_x_range="-1.565:-1.54"
-default_y_range="53.801:53,812"
+default_x_range="10:20"
+default_y_range="-1:-10"
 if [ -f "range_x.txt" ]; then
     x_range=$(cat range_x.txt)
 else

@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "fileio.h"
 #include "errhandler.h"
 
-int read_file(const char* filename, node_vector* nodes, edge_vector* edges, Bound* bd) {
+int read_file(const char* filename, Node* node_table[], edge_vector* edges, Bound* bd) {
     FILE* map_file = fopen(filename, "r");
     if (map_file == NULL) {
         perror("map file open");
@@ -18,13 +19,13 @@ int read_file(const char* filename, node_vector* nodes, edge_vector* edges, Boun
     }
 
     // read edge
-    ret =read_edge(map_file, edges);
+    ret = read_edge(map_file, edges);
     if (ret != 0) {
         return ret;
     }
 
     // read node
-    ret = read_node(map_file, nodes);
+    ret = read_node(map_file, node_table);
     if (ret != 0) {
         return ret;
     }
@@ -83,8 +84,8 @@ int read_edge(FILE* map_file, edge_vector* edges) {
     return 0;
 }
 
-int read_node(FILE* map_file, node_vector* nodes) {
-    int cnt = 2;
+int read_node(FILE* map_file, Node* node_table[]) {
+    //int cnt = 2;
     if (map_file == NULL) {
         printf("ERROR: map file ptr can not be NULL\n");
         return -1;
@@ -94,19 +95,21 @@ int read_node(FILE* map_file, node_vector* nodes) {
     char* prefix = "<node";
     char* suffix = "/node>";
     while (fgets(node_buf, MAX_LINE_LENGTH, map_file)) {
-        printf("%d\n", ++cnt);
+        //printf("%d\n", ++cnt);
         int ret = check_line_fmt(node_buf, prefix, suffix);
         if (ret == -1) {
             fseek(map_file, -strlen(node_buf), SEEK_CUR);
             break;
         }
 
-        Node node;
+        int64_t id = -1;
+        double lat = -1, lon = -1;
         sscanf(node_buf,
                "<node id=%ld lat=%lf lon=%lf /node>\n",
-               &node.id, &node.lat, &node.lon);
+               &id, &lat, &lon);
 
-        n_vector_push_back(nodes, node);
+        assert(id != -1 && lat != -1 && lon != -1);
+        insert(node_table, id, lat, lon);
     }
 
     return 0;
