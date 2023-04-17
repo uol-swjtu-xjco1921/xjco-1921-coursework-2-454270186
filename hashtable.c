@@ -50,3 +50,20 @@ Node* search(Node* table[], int64_t id) {
     return NULL;
 }
 
+/// @brief 
+/// @param table 
+void free_table(Node* table[]) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (table[i] == NULL) {
+            continue;
+        }
+
+        Node* curr = table[i];
+        while (curr != NULL) {
+            Node* temp = curr;
+            curr = curr->next;
+            free(temp);
+        }
+    }
+}
+

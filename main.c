@@ -20,6 +20,7 @@ int main() {
     system("bash ./plot_data.sh");
 
     e_vector_free(&edges);
+    free_table(node_table);
 
     return 0;
 }
