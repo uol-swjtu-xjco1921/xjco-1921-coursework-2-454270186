@@ -4,7 +4,7 @@
 /// @param id the node id
 /// @return the hash value
 int hash_func(int64_t id) {
-    return abs(id) % TABLE_SIZE;
+    return labs(id) % TABLE_SIZE;
 }
 
 /// @brief insert a node into table
