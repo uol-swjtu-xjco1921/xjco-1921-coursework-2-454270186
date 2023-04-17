@@ -9,7 +9,7 @@ int read_file(const char* filename, Node* node_table[], edge_vector* edges, Boun
     FILE* map_file = fopen(filename, "r");
     if (map_file == NULL) {
         perror("map file open");
-        return -1;
+        exit(-1);
     }
 
     // read bound
@@ -68,9 +68,17 @@ int read_edge(FILE* map_file, edge_vector* edges) {
     char* suffix = "/link>";
     while (fgets(edge_buf, MAX_LINE_LENGTH, map_file)) {
         int ret = check_line_fmt(edge_buf, prefix, suffix);
-        if (ret == -1) {
-            fseek(map_file, -strlen(edge_buf), SEEK_CUR);
-            break;
+        if (ret == WRONG_PREFIX) {
+            if (strncmp(edge_buf, "<node", strlen("<node")) == 0){
+                fseek(map_file, -strlen(edge_buf), SEEK_CUR);
+                break;
+            }
+            
+            printf("ERROR: Can not read line (wrong prefix)\n");
+            exit(-1);
+        } else if (ret == WRONG_SUFFIX) {
+            printf("ERROR: Can not read line (wrong suffix)\n");
+            exit(-1);
         }
 
         Edge edge;
@@ -85,7 +93,6 @@ int read_edge(FILE* map_file, edge_vector* edges) {
 }
 
 int read_node(FILE* map_file, Node* node_table[]) {
-    //int cnt = 2;
     if (map_file == NULL) {
         printf("ERROR: map file ptr can not be NULL\n");
         return -1;
@@ -95,11 +102,20 @@ int read_node(FILE* map_file, Node* node_table[]) {
     char* prefix = "<node";
     char* suffix = "/node>";
     while (fgets(node_buf, MAX_LINE_LENGTH, map_file)) {
-        //printf("%d\n", ++cnt);
         int ret = check_line_fmt(node_buf, prefix, suffix);
-        if (ret == -1) {
-            fseek(map_file, -strlen(node_buf), SEEK_CUR);
+        if (ret == WRONG_PREFIX) {
+            char next_line[MAX_LINE_LENGTH];
+            fgets(next_line, MAX_LINE_LENGTH, map_file);
+            if (check_line_fmt(next_line, prefix, suffix) == 0) {
+                printf("ERROR: Can not read line (wrong prefix)\n");
+                exit(-1);
+            }
+
+            fseek(map_file, -(strlen(next_line)+strlen(node_buf)), SEEK_CUR);
             break;
+        } else if (ret == WRONG_SUFFIX) {
+            printf("ERROR: Can not read line (wrong suffix)\n");
+            exit(-1);
         }
 
         int64_t id = -1;

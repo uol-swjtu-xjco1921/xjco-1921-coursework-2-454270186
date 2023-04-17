@@ -1,20 +1,38 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "errhandler.h"
 
+/// @brief 
+/// @param argc 
+/// @param argv 
+void check_cmd_arg(int argc){
+    if (argc != 2) {
+        if (argc == 1) {
+            printf("Usage: ./main <mapfile>\n");
+            exit(-1);
+        }
+        fprintf(stderr, "Wrong arguement count\n");
+        exit(-1);
+    }
+}
+
+/// @brief 
+/// @param line 
+/// @param prefix 
+/// @param suffix 
+/// @return 
 int check_line_fmt(const char* line, const char* prefix, const char* suffix) {
     // check prefix
     int ret = strncmp(line, prefix, strlen(prefix));
     if (ret != 0) {
-        printf("ERROR: Can not read line (wrong prefix)\n");
-        return -1;
+        return WRONG_PREFIX;
     }
 
     // check suffix
     char* str = strstr(line, suffix);
     if (str == NULL) {
-        printf("ERROR: Can not read line (wrong suffix)\n");
-        return -1;
+        return WRONG_SUFFIX;
     }
 
     return 0;

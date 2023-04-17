@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <SDL2/SDL.h>
 
 // Define a struct to represent a node in the graph
 typedef struct node {

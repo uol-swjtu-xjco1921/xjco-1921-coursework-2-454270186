@@ -4,15 +4,19 @@
 #include "script.h"
 #include "hashtable.h"
 #include "drawer.h"
+#include "errhandler.h"
 
-int main() {
+int main(int argc, char** argv) {
+    check_cmd_arg(argc, argv);
+    char* filename = argv[1];
+
     Bound bd;
     edge_vector edges;
     Node* node_table[TABLE_SIZE] = {NULL};
 
     e_vector_init(&edges, 10);
 
-    read_file("leeds.map", node_table, &edges, &bd);
+    read_file(filename, node_table, &edges, &bd);
     
     set_range(&bd);
     input_edges(&edges, node_table);
