@@ -1,4 +1,5 @@
 #include "hashtable.h"
+#include "log.h"
 
 /// @brief calculate the hash value of id
 /// @param id the node id
@@ -65,5 +66,7 @@ void free_table(Node* table[]) {
             free(temp);
         }
     }
+
+    log_info("table freed");
 }
 

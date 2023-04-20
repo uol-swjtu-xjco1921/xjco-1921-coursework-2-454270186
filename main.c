@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <plplot/plplot.h>
+#include "log.h"
 #include "fileio.h"
 #include "script.h"
 #include "hashtable.h"
@@ -17,11 +19,12 @@ int main(int argc, char** argv) {
     e_vector_init(&edges, 10);
 
     read_file(filename, node_table, &edges, &bd);
-    
-    set_range(&bd);
-    input_edges(&edges, node_table);
 
-    system("bash ./plot_data.sh");
+    draw_edges(&bd, &edges, node_table);
+    // set_range(&bd);
+    // input_edges(&edges, node_table);
+
+    // system("bash ./plot_data.sh");
 
     e_vector_free(&edges);
     free_table(node_table);

@@ -2,11 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include "errhandler.h"
+#include "log.h"
 
 /// @brief 
 /// @param argc 
 /// @param argv 
-void check_cmd_arg(int argc){
+void check_cmd_arg(int argc, char** argv){
     if (argc != 2) {
         if (argc == 1) {
             printf("Usage: ./main <mapfile>\n");
@@ -15,6 +16,8 @@ void check_cmd_arg(int argc){
         fprintf(stderr, "Wrong arguement count\n");
         exit(-1);
     }
+
+    log_info("File: %s is valid\n", argv[1]);
 }
 
 /// @brief 

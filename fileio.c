@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include "log.h"
 #include "fileio.h"
 #include "errhandler.h"
 
@@ -17,25 +18,29 @@ int read_file(const char* filename, Node* node_table[], edge_vector* edges, Boun
     if (ret != 0) {
         return ret;
     }
+    log_info("Successfully read bound");
 
     // read edge
     ret = read_edge(map_file, edges);
     if (ret != 0) {
         return ret;
     }
+    log_info("Successfully read edges");
 
     // read node
     ret = read_node(map_file, node_table);
     if (ret != 0) {
         return ret;
     }
+    log_info("Successfully read nodes");
 
     return 0;
 }
 
 int read_bound(FILE* map_file, Bound* bd) {
     if (map_file == NULL) {
-        printf("ERROR: map file ptr can not be NULL\n");
+        //printf("ERROR: map file ptr can not be NULL\n");
+        log_error("map file ptr can not be NULL");
         return -1;
     }
 
@@ -59,7 +64,8 @@ int read_bound(FILE* map_file, Bound* bd) {
 
 int read_edge(FILE* map_file, edge_vector* edges) {
     if (map_file == NULL) {
-        printf("ERROR: map file ptr can not be NULL\n");
+        //printf("ERROR: map file ptr can not be NULL\n");
+        log_error("map file ptr can not be NULL");
         return -1;
     }
 
@@ -74,10 +80,12 @@ int read_edge(FILE* map_file, edge_vector* edges) {
                 break;
             }
             
-            printf("ERROR: Can not read line (wrong prefix)\n");
+            //printf("ERROR: Can not read line (wrong prefix)\n");
+            log_error("Can not read line (wrong prefix)");
             exit(-1);
         } else if (ret == WRONG_SUFFIX) {
-            printf("ERROR: Can not read line (wrong suffix)\n");
+            //printf("ERROR: Can not read line (wrong suffix)\n");
+            log_error("Can not read line (wrong suffix)");
             exit(-1);
         }
 
@@ -94,7 +102,8 @@ int read_edge(FILE* map_file, edge_vector* edges) {
 
 int read_node(FILE* map_file, Node* node_table[]) {
     if (map_file == NULL) {
-        printf("ERROR: map file ptr can not be NULL\n");
+        //printf("ERROR: map file ptr can not be NULL\n");
+        log_error("map file ptr can not be NULL");
         return -1;
     }
 
@@ -107,14 +116,16 @@ int read_node(FILE* map_file, Node* node_table[]) {
             char next_line[MAX_LINE_LENGTH];
             fgets(next_line, MAX_LINE_LENGTH, map_file);
             if (check_line_fmt(next_line, prefix, suffix) == 0) {
-                printf("ERROR: Can not read line (wrong prefix)\n");
+                //printf("ERROR: Can not read line (wrong prefix)\n");
+                log_error("Can not read line (wrong prefix)");
                 exit(-1);
             }
 
             fseek(map_file, -(strlen(next_line)+strlen(node_buf)), SEEK_CUR);
             break;
         } else if (ret == WRONG_SUFFIX) {
-            printf("ERROR: Can not read line (wrong suffix)\n");
+            //printf("ERROR: Can not read line (wrong suffix)\n");
+            log_error("Can not read line (wrong suffix)");
             exit(-1);
         }
 

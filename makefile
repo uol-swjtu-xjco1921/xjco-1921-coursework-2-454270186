@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
-LDFLAGS =
+CFLAGS = -Wall -Wextra -std=c99 -lplplot
+LDFLAGS = 
 
 TARGET = main
-SRCS = main.c fileio.c errhandler.c script.c vector.c hashtable.c drawer.c
+SRCS = main.c fileio.c errhandler.c script.c vector.c hashtable.c drawer.c log.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all clean
@@ -11,7 +11,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) $^ -o $@
+	$(CC) $(LDFLAGS) $^ -lplplot -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

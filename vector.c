@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "log.h"
 #include "vector.h"
 #include "models.h"
 /*
@@ -9,6 +10,7 @@ void e_vector_init(edge_vector* e_vector, int capacity) {
     e_vector->edges = malloc(capacity * sizeof(Edge));
     e_vector->size = 0;
     e_vector->capacity = capacity;
+    log_info("edge vector initialized");
 }
 
 void e_vector_push_back(edge_vector* e_vector, Edge edge) {
@@ -22,6 +24,7 @@ void e_vector_push_back(edge_vector* e_vector, Edge edge) {
 
 void e_vector_free(edge_vector* e_vector) {
     free(e_vector->edges);
+    log_info("edge vector freed");
 }
 
 

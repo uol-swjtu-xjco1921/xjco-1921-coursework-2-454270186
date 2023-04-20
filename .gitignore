@@ -58,3 +58,12 @@ main
 
 # todo
 todo.md
+
+# test file
+test.c
+plplot.c
+
+# data stub
+range_x.txt
+range_y.txt
+edge.dat
