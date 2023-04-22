@@ -145,7 +145,7 @@ int read_node(FILE* map_file, node_vector* nodes, Node* node_table[]) {
         node.lon = lon;
         node.adj_list = NULL;
         node.next = NULL;
-        node.is_visited = 0;
+        // node.is_visited = 0;
         node.dis = 0;
         n_vector_push_back(nodes, node);
         insert(node_table, id, lat, lon);

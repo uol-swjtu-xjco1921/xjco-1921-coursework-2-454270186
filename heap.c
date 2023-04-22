@@ -26,6 +26,16 @@ int is_empty(Heap* heap) {
     return heap->size == 0;
 }
 
+int is_contain(Heap* heap, int64_t node_id) {
+    for (int i = 1; i <= heap->size; i++) {
+        if (heap->data[i].id == node_id) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 void shift_up(Heap* heap, int index) {
     while (index > 1 && heap->data[index].dis < heap->data[index/2].dis) {
         swap_node(&(heap->data[index]), &(heap->data[index/2]));
@@ -70,4 +80,15 @@ Node heap_pop(Heap* heap) {
     heap->data[1] = heap->data[heap->size--];
     shift_down(heap, 1);
     return top;
+}
+
+void heap_update_node(Heap* heap, Node* node) {
+    for (int i = 1; i <= heap->size; i++) {
+        if (heap->data[i].id == node->id) {
+            heap->data[i].dis = node->dis;
+            shift_up(heap, i);
+            shift_down(heap, i);
+            return;
+        }
+    }   
 }

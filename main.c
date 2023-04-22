@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
     //     adj = adj->next;
     // }
 
-    dijkstra(&nodes, adj_table, 54060396, -1886275239);
+    dijkstra(&nodes, adj_table, 993673515, 1601125136);
 
     //draw_edges(&bd, &edges, node_table);
 

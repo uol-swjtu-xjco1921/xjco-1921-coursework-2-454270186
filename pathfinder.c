@@ -6,8 +6,7 @@
 
 void print_path(Node* pre_table[], int64_t start_node_id, int64_t end_node_id) {
     int64_t curr_id = end_node_id;
-    int num = 0;
-    while (curr_id != start_node_id && num++ <= 20) {
+    while (curr_id != 0) {
         printf("%ld ", curr_id);
         curr_id = get_pre_node_id(pre_table, curr_id);
         if (curr_id == -1) {
@@ -15,21 +14,25 @@ void print_path(Node* pre_table[], int64_t start_node_id, int64_t end_node_id) {
             break;
         }
     }
+    if (curr_id == start_node_id) {
+        printf("%ld ", curr_id);
+    }
     printf("\n");
     printf("finish..\n");
 }
 
 void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int64_t end_node_id) {
     log_info("dijkstra starting...");
-    // initialize heap and dis
     Heap* heap = create_heap(nodes->size);
     Node* pre_table[TABLE_SIZE] = {NULL};
+    Vis_node* vis_table[TABLE_SIZE] = {NULL};
+
+    // initialize heap and dis
     for (int i = 0; i < nodes->size; i++) {
         Node node = nodes->nodes[i];
         Adj_list* adj = get_adj_list(adj_table, node.id);
         while (adj != NULL) {
             Node* node = adj->neighbor_node;
-            node->is_visited = 0;
             node->dis = (node->id == start_node_id) ? 0.0 : DBL_MAX;
             if (node->id == start_node_id) {
                 heap_push(heap, *node);
@@ -48,7 +51,8 @@ void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int6
 
     while (!is_empty(heap)) {
         Node curr_node = heap_pop(heap);
-        curr_node.is_visited = 1;
+        // curr_node.is_visited = 1;
+        vis_insert(vis_table, curr_node.id);
         if (curr_node.id == end_node_id) {
             // reach the end
             //printf("the distance between start node and end node is %lf\n", curr_node.dis);
@@ -62,8 +66,23 @@ void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int6
             //printf("adj while loop\n");
             Node* neighbor_node = adj->neighbor_node;
             double new_dis = curr_node.dis + adj->length;
-            //printf("neighbor %ld node's dis is %lf, vis is %d\n", neighbor_node->id, neighbor_node->dis, neighbor_node->is_visited);
-            if (!neighbor_node->is_visited && new_dis < neighbor_node->dis) {
+            // if (!neighbor_node->is_visited) {
+            //     if (is_contain(heap, neighbor_node->id)) {
+
+            //         if (new_dis < neighbor_node->dis) {
+            //             neighbor_node->dis = new_dis;
+            //             heap_update_node(heap, neighbor_node);
+            //             pre_insert(pre_table, neighbor_node->id, curr_node.id);
+            //         }
+            //     } else {
+            //         neighbor_node->dis = new_dis;
+            //         heap_push(heap, *neighbor_node);
+            //         pre_insert(pre_table, neighbor_node->id, curr_node.id);
+            //     }
+            // }
+            
+            if (is_node_visited(vis_table, neighbor_node->id) == 0 && new_dis < neighbor_node->dis) {
+                printf("neighbor %ld node's dis is %lf\n", neighbor_node->id, neighbor_node->dis);
                 //printf("sss\n");
                 neighbor_node->dis = new_dis;
                 heap_push(heap, *neighbor_node);

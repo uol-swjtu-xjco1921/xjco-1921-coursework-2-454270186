@@ -21,7 +21,7 @@ void insert(Node* table[], int64_t id, double lat, double lon) {
     new_node->lat = lat;
     new_node->lon = lon;
     new_node->next = NULL;
-    new_node->is_visited = 0;
+    // new_node->is_visited = 0;
 
     // insert the node using head inserting
     if (table[index] == NULL) {
@@ -145,3 +145,36 @@ int64_t get_pre_node_id(Node* table[], int64_t curr_node_id) {
     return -1;   
 }
 
+
+void vis_insert(Vis_node* table[], int64_t node_id) {
+    int index = hash_func(node_id);
+
+    Vis_node* node = (Vis_node*)malloc(sizeof(Vis_node));
+    node->node_id = node_id;
+    
+    if (table[index] == NULL) {
+        table[index] = node;
+    } else {
+        node->next = table[index];
+        table[index] = node;
+    }
+}
+
+int is_node_visited(Vis_node* table[], int64_t node_id) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (table[i] == NULL) {
+            continue;
+        }
+
+        Vis_node* n = table[i];
+        while (n != NULL) {
+            if (n->node_id == node_id) {
+                return 1;
+            }
+
+            n = n->next;
+        }
+    }
+
+    return 0;
+}

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "models.h"
 
-#define TABLE_SIZE 8081
+#define TABLE_SIZE 1000
 
 /*
     General func
@@ -31,5 +31,16 @@ Adj_list* get_adj_list(Node* table[], int64_t id);
 */
 void pre_insert(Node* table[], int64_t curr_node_id, int64_t pre_node_id);
 int64_t get_pre_node_id(Node* table[], int64_t curr_node_id);
+
+/*
+    HashTable for <node_id, is_visited>
+*/
+typedef struct _vis_node {
+    int64_t node_id;
+    struct _vis_node* next;
+} Vis_node;
+
+void vis_insert(Vis_node* table[], int64_t node_id);
+int is_node_visited(Vis_node* table[], int64_t node_id);
 
 #endif
