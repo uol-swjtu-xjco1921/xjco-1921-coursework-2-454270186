@@ -15,6 +15,8 @@ typedef struct _node{
     struct _node* next;
     Adj_list* adj_list;
     int is_visited;
+    double dis;
+    int64_t next_id; // used for path backtracking
 } Node;
 
 typedef struct {

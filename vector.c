@@ -35,6 +35,7 @@ void n_vector_init(node_vector* n_vector, int capacity) {
     n_vector->nodes = malloc(capacity * sizeof(Node));
     n_vector->size = 0;
     n_vector->capacity = capacity;
+    log_info("node vector initialized");
 }
 
 void n_vector_push_back(node_vector* n_vector, Node node) {
@@ -48,4 +49,5 @@ void n_vector_push_back(node_vector* n_vector, Node node) {
 
 void n_vector_free(node_vector* n_vector) {
     free(n_vector->nodes);
+    log_info("node vector freed");
 }

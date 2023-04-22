@@ -114,3 +114,34 @@ Adj_list* get_adj_list(Node* table[], int64_t id) {
     }
 }
 
+void pre_insert(Node* table[], int64_t curr_node_id, int64_t pre_node_id) {
+    int index = hash_func(curr_node_id);
+
+    Node* pre_node = (Node*)malloc(sizeof(Node));
+    pre_node->id = pre_node_id;
+    pre_node->next_id = curr_node_id;
+    
+    if (table[index] == NULL) {
+        table[index] = pre_node;
+    } else {
+        pre_node->next = table[index];
+        table[index] = pre_node;
+    }
+}
+
+int64_t get_pre_node_id(Node* table[], int64_t curr_node_id) {
+    int index = hash_func(curr_node_id);
+
+    // traverse the linked list in hash table
+    Node* pre_node = table[index];
+    while (pre_node != NULL) {
+        if (pre_node->next_id == curr_node_id) {
+            return pre_node->id;
+        }
+        pre_node = pre_node->next;
+    }
+
+    // Not Found
+    return -1;   
+}
+
