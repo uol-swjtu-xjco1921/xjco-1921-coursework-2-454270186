@@ -2,22 +2,17 @@ My project has these modules:
 1. main (the entry of project)
 2. errhandler
 3. fileio 
-4. script
-5. vector
-6. hashtable
-7. drawer
-8. plot_data.sh
+4. vector
+5. hashtable
+6. drawer
+7. pathfinder
 --------------------------------
 
 1. main
 This is the entry file of project. In this file, 
 it initializes three data structures to store bounding, 
 edges and nodes. Then it reads the data file and parse 
-the datas. After data parsing, it writes formatted data
-into the files that are for Gnuplot to draw the routes.
-Then, it call system() to execute shell script to start
-Gnuplot and generate the 'map.png'. Finally, it releases
-the resources.
+the datas.
 
 2. errhandler
 This module includes error-handler and format-check. 
