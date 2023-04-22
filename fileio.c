@@ -6,7 +6,7 @@
 #include "fileio.h"
 #include "errhandler.h"
 
-int read_file(const char* filename, Node* node_table[], edge_vector* edges, Bound* bd) {
+int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_vector* edges, Bound* bd) {
     FILE* map_file = fopen(filename, "r");
     if (map_file == NULL) {
         perror("map file open");
@@ -21,7 +21,7 @@ int read_file(const char* filename, Node* node_table[], edge_vector* edges, Boun
     log_info("Successfully read bound");
 
     // read edge
-    ret = read_edge(map_file, edges);
+    ret = read_edge(map_file, edges, adj_table);
     if (ret != 0) {
         return ret;
     }
@@ -62,7 +62,7 @@ int read_bound(FILE* map_file, Bound* bd) {
     return 0;
 }
 
-int read_edge(FILE* map_file, edge_vector* edges) {
+int read_edge(FILE* map_file, edge_vector* edges, Node* adj_table[]) {
     if (map_file == NULL) {
         //printf("ERROR: map file ptr can not be NULL\n");
         log_error("map file ptr can not be NULL");
@@ -94,6 +94,8 @@ int read_edge(FILE* map_file, edge_vector* edges) {
                "<link id=%ld node=%ld node=%ld way=%d length=%lf veg=%lf arch=%lf land=%lf POI=%d,;/link>",
                &edge.id, &edge.from, &edge.to, &edge.way, &edge.length, &edge.veg, &edge.arch, &edge.land, &edge.POI);
 
+        adj_insert(adj_table, edge.from, edge.to, edge.length);
+        adj_insert(adj_table, edge.to, edge.from, edge.length);
         e_vector_push_back(edges, edge);
     }
 

@@ -2,11 +2,19 @@
 #define _MODELS
 #include <stdint.h>
 
+typedef struct _adj_list{
+    struct _node* neighbor_node;
+    double length;
+    struct _adj_list* next;
+} Adj_list;
+
 typedef struct _node{
     int64_t id;
     double lat;
     double lon;
     struct _node* next;
+    Adj_list* adj_list;
+    int is_visited;
 } Node;
 
 typedef struct {

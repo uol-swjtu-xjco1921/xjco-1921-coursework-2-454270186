@@ -21,6 +21,7 @@ void insert(Node* table[], int64_t id, double lat, double lon) {
     new_node->lat = lat;
     new_node->lon = lon;
     new_node->next = NULL;
+    new_node->is_visited = 0;
 
     // insert the node using head inserting
     if (table[index] == NULL) {
@@ -68,5 +69,48 @@ void free_table(Node* table[]) {
     }
 
     log_info("table freed");
+}
+
+void adj_insert(Node* table[], int64_t id, int64_t neighber_id, double length) {
+    int index = hash_func(id);
+
+    Node* cur_node = table[index];
+    while (cur_node != NULL && cur_node->id != id) {
+        cur_node = cur_node->next;
+    }
+    if (cur_node == NULL) {
+        cur_node = (Node*)malloc(sizeof(Node));
+        cur_node->id = id;
+        cur_node->adj_list = NULL;
+        cur_node->next = table[index];
+        table[index] = cur_node;
+    }
+
+    Adj_list* adj = (Adj_list*)malloc(sizeof(Adj_list));
+    adj->neighbor_node = (Node*)malloc(sizeof(Node));
+    adj->neighbor_node->id = neighber_id;
+    adj->length = length;
+    adj->next = cur_node->adj_list;
+    cur_node->adj_list = adj;
+
+    // printf("insert id %ld and neighbor id %ld\n", id, neighber_id);
+}
+
+Adj_list* get_adj_list(Node* table[], int64_t id) {
+    int index = hash_func(id);
+
+    Node* cur_node = table[index];
+    while (cur_node != NULL) {
+        if (cur_node->id == id) {
+            break;
+        }
+        cur_node = cur_node->next;
+    }
+
+    if (cur_node == NULL) {
+        return NULL;
+    } else {
+        return cur_node->adj_list;
+    }
 }
 
