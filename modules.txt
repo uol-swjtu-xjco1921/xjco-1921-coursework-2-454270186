@@ -8,6 +8,7 @@ My project has these modules:
 7. drawer
 8. pathfinder
 9. log
+10. test
 --------------------------------
 
 1. main
@@ -42,10 +43,13 @@ This is a data structure module which implements hash map.
 This module implements three types of hashtable for:
 (1) <node_id, node>
     map the node ID and the node itself, achieving fast node lookup.
+
 (2) <node_id, adjacency_list>
     map the node_id and adjacency list composed of all neighbors of a node.
+
 (3) <node_id, pre_node_id>
     map the node and its previous node, used for backtracking record paths
+    
 (4) <visited_node_id>
     this is a hashset for node, Add visited nodes to the hashset to avoid repeat visit
 
@@ -64,9 +68,10 @@ Including:
     - shift down node
 (4) Interface for inserting and removing heap elements.
 
-Used to maintain the element closest to the starting point at the top of the heap 
-when implementing the dijkstra algorithm, ensuring that the nearest neighbor of 
-the node is traversed first each time, improving the efficiency of the algorithm
+The heap is used to maintain the element closest to the starting point at the top 
+of the heap when implementing the dijkstra algorithm, ensuring that the nearest 
+neighbor of the node is traversed first each time, improving the efficiency of the
+algorithm
 
 7. drawer
 Encapsulated a graphical library named plplot.
@@ -81,3 +86,10 @@ Including:
 A lightweight third-party log library.
 Used for printing information, warnings, errors.
 It can more conveniently record the running status of the program.
+
+10. test (not yet implemented)
+This modules is used to provide test interfaces including Unit test and Integration test. 
+
+Customize error data and edge conditions to test the
+functionality of the program, and print standardized
+and clear error information to assist in debugging.
