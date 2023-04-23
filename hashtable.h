@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "models.h"
 
-#define TABLE_SIZE 100
+#define TABLE_SIZE 1000
 
 /*
     General func

@@ -14,6 +14,7 @@ node_vector print_path(Node* pre_table[], Node* node_table[], int64_t start_node
         Node* node = search(node_table, curr_id);
         if (node == NULL) {
             log_error("no node with id %ld", curr_id);
+            exit(-1);
         }
         n_vector_push_back(&nodes, *node);
 
