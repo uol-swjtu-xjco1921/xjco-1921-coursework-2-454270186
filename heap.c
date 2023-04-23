@@ -72,7 +72,7 @@ void heap_push(Heap* heap, Node node) {
 Node heap_pop(Heap* heap) {
     if (is_empty(heap)) {
         printf("heap is empty\n");
-        Node node;
+        Node node = {0, 0.0, 0.0, NULL, NULL, 0.0, 0};
         return node;
     }
 

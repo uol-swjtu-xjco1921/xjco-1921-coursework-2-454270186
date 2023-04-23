@@ -4,10 +4,19 @@
 #include "pathfinder.h"
 #include "log.h"
 
-void print_path(Node* pre_table[], int64_t start_node_id, int64_t end_node_id) {
+node_vector print_path(Node* pre_table[], Node* node_table[], int64_t start_node_id, int64_t end_node_id) {
+    node_vector nodes;
+    n_vector_init(&nodes, 10);
     int64_t curr_id = end_node_id;
     while (curr_id != 0) {
         printf("%ld ", curr_id);
+
+        Node* node = search(node_table, curr_id);
+        if (node == NULL) {
+            log_error("no node with id %ld", curr_id);
+        }
+        n_vector_push_back(&nodes, *node);
+
         curr_id = get_pre_node_id(pre_table, curr_id);
         if (curr_id == -1) {
             log_error("there is no path between two points");
@@ -15,13 +24,20 @@ void print_path(Node* pre_table[], int64_t start_node_id, int64_t end_node_id) {
         }
     }
     if (curr_id == start_node_id) {
+        Node* node = search(node_table, curr_id);
+        if (node == NULL) {
+            log_error("no node with id %ld", curr_id);
+        }
+        n_vector_push_back(&nodes, *node);
         printf("%ld ", curr_id);
     }
     printf("\n");
     printf("finish..\n");
+
+    return nodes;
 }
 
-void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int64_t end_node_id) {
+node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], int64_t start_node_id, int64_t end_node_id) {
     log_info("dijkstra starting...");
     Heap* heap = create_heap(nodes->size);
     Node* pre_table[TABLE_SIZE] = {NULL};
@@ -46,7 +62,9 @@ void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int6
     if (is_empty(heap)) {
         //printf("Error: no start node\n");
         log_error("Error: no start node");
-        return;
+        node_vector empty;
+        n_vector_init(&empty, 0);
+        return empty;
     }
 
     while (!is_empty(heap)) {
@@ -63,24 +81,9 @@ void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int6
         // printf("vis is %d\n", curr_node.is_visited);
         Adj_list* adj = get_adj_list(adj_table, curr_node.id);
         while (adj != NULL) {
-            //printf("adj while loop\n");
             Node* neighbor_node = adj->neighbor_node;
             double new_dis = curr_node.dis + adj->length;
-            // if (!neighbor_node->is_visited) {
-            //     if (is_contain(heap, neighbor_node->id)) {
 
-            //         if (new_dis < neighbor_node->dis) {
-            //             neighbor_node->dis = new_dis;
-            //             heap_update_node(heap, neighbor_node);
-            //             pre_insert(pre_table, neighbor_node->id, curr_node.id);
-            //         }
-            //     } else {
-            //         neighbor_node->dis = new_dis;
-            //         heap_push(heap, *neighbor_node);
-            //         pre_insert(pre_table, neighbor_node->id, curr_node.id);
-            //     }
-            // }
-            
             if (is_node_visited(vis_table, neighbor_node->id) == 0 && new_dis < neighbor_node->dis) {
                 printf("neighbor %ld node's dis is %lf\n", neighbor_node->id, neighbor_node->dis);
                 //printf("sss\n");
@@ -96,7 +99,9 @@ void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int6
     }
     log_info("dijkstra finished...");
 
-    print_path(pre_table, start_node_id, end_node_id);
+    node_vector path =  print_path(pre_table, node_table, start_node_id, end_node_id);
 
     destroy_heap(heap);
+
+    return path;
 }  

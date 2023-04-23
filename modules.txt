@@ -4,15 +4,80 @@ My project has these modules:
 3. fileio 
 4. vector
 5. hashtable
-6. drawer
-7. pathfinder
+6. heap
+7. drawer
+8. pathfinder
+9. log
 --------------------------------
 
 1. main
 This is the entry file of project. In this file, 
 it initializes three data structures to store bounding, 
 edges and nodes. Then it reads the data file and parse 
-the datas.
+the datas. Call the interface to find the shortest path
+that the user needs and draw it out. Finally, reclaim 
+memory resources
 
 2. errhandler
 This module includes error-handler and format-check. 
+Provides some interfaces for checking file legality 
+and format. Contribute to the robustness and stability 
+of the program.
+
+3. fileio
+Provides an interface for reading data files and interacting
+with various data structure modules to store the data completely,
+preparing for subsequent work.
+
+4. vector
+This is a data structure module which implements a dynamic array
+like vector in C++. 
+(1) Support storage of node and edge structs.
+(2) Provides interfaces for inserting and removing elements.
+(3) Supports dynamic expansion.
+(4) Provides interfaces for initializing and releasing memory, ensuring memory security.
+
+5. hashtable
+This is a data structure module which implements hash map.
+This module implements three types of hashtable for:
+(1) <node_id, node>
+    map the node ID and the node itself, achieving fast node lookup.
+(2) <node_id, adjacency_list>
+    map the node_id and adjacency list composed of all neighbors of a node.
+(3) <node_id, pre_node_id>
+    map the node and its previous node, used for backtracking record paths
+(4) <visited_node_id>
+    this is a hashset for node, Add visited nodes to the hashset to avoid repeat visit
+
+It also provides an interface for calculating hash values, solving the 
+problem of poor indexing when the node ID is too large or negative.
+
+6. heap
+This is a data structure modules which implements a small root heap.
+Including:
+(1) Creation and destruction of heap, ensure memory security.
+(2) Some utilities like is_empty() and is_contain()
+(3) Node operation interface of heap:
+    - swap node
+    - update node
+    - shift up node
+    - shift down node
+(4) Interface for inserting and removing heap elements.
+
+Used to maintain the element closest to the starting point at the top of the heap 
+when implementing the dijkstra algorithm, ensuring that the nearest neighbor of 
+the node is traversed first each time, improving the efficiency of the algorithm
+
+7. drawer
+Encapsulated a graphical library named plplot.
+Provides an interface for drawing maps and shortest paths.
+
+8. pathfinder
+Including:
+(1) Implementation of Dijkstra Algorithm
+(2) Backtracking record of the shortest path
+
+9. log
+A lightweight third-party log library.
+Used for printing information, warnings, errors.
+It can more conveniently record the running status of the program.

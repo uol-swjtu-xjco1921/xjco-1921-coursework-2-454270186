@@ -10,12 +10,12 @@
 /*
     External interface
 */
-void print_path(Node* pre_table[], int64_t start_node_id, int64_t end_node_id);
+node_vector print_path(Node* pre_table[], Node* node_table[], int64_t start_node_id, int64_t end_node_id);
 int find_path();
 
 /*
     Dijkstra
 */
-void dijkstra(node_vector* nodes, Node* adj_table[], int64_t start_node_id, int64_t end_node_id);
+node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], int64_t start_node_id, int64_t end_node_id);
 
 #endif

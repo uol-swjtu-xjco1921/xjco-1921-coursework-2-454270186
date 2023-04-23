@@ -24,16 +24,10 @@ int main(int argc, char** argv) {
 
     read_file(filename, node_table, adj_table, &edges,  &nodes,&bd);
 
-    // Adj_list* adj = get_adj_list(adj_table, 54060411);
-    // printf("sss\n");
-    // while (adj != NULL) {
-    //     printf("Neighbor ID: %ld, Length: %f\n", adj->neighbor_node->id, adj->length);
-    //     adj = adj->next;
-    // }
-
-    dijkstra(&nodes, adj_table, 993673515, 1601125136);
+    node_vector path = dijkstra(&nodes, adj_table, node_table, 115024, 985096754);
 
     //draw_edges(&bd, &edges, node_table);
+    draw_shortest_path(&bd, &path, &edges, node_table);
 
     e_vector_free(&edges);
     n_vector_free(&nodes);

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "models.h"
 
-#define TABLE_SIZE 1000
+#define TABLE_SIZE 100
 
 /*
     General func
@@ -33,7 +33,7 @@ void pre_insert(Node* table[], int64_t curr_node_id, int64_t pre_node_id);
 int64_t get_pre_node_id(Node* table[], int64_t curr_node_id);
 
 /*
-    HashTable for <node_id, is_visited>
+    HashSet for <node_id>
 */
 typedef struct _vis_node {
     int64_t node_id;
