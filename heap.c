@@ -36,6 +36,16 @@ int is_contain(Heap* heap, int64_t node_id) {
     return 0;
 }
 
+int heap_find(Heap* heap, Node node) {
+    for (int i = 1; i <= heap->size; i++) {
+        if (heap->data[i].id == node.id) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void shift_up(Heap* heap, int index) {
     while (index > 1 && heap->data[index].dis < heap->data[index/2].dis) {
         swap_node(&(heap->data[index]), &(heap->data[index/2]));
@@ -72,7 +82,7 @@ void heap_push(Heap* heap, Node node) {
 Node heap_pop(Heap* heap) {
     if (is_empty(heap)) {
         printf("heap is empty\n");
-        Node node = {0, 0.0, 0.0, NULL, NULL, 0.0, 0};
+        Node node = {0, 0.0, 0.0, NULL, NULL, 0.0, -1};
         return node;
     }
 
@@ -82,13 +92,18 @@ Node heap_pop(Heap* heap) {
     return top;
 }
 
-void heap_update_node(Heap* heap, Node* node) {
+int heap_update_node(Heap* heap, Node node) {
     for (int i = 1; i <= heap->size; i++) {
-        if (heap->data[i].id == node->id) {
-            heap->data[i].dis = node->dis;
+        if (heap->data[i].id == node.id) {
+            if (heap->data[i].dis > node.dis){
+               heap->data[i].dis = node.dis;
+               return 1; 
+            }
             shift_up(heap, i);
             shift_down(heap, i);
-            return;
+            return 0;
         }
     }   
+
+    return 0;
 }

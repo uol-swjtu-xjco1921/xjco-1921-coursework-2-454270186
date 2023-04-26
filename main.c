@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 
     read_file(filename, node_table, adj_table, &edges,  &nodes,&bd);
 
-    node_vector path = dijkstra(&nodes, adj_table, node_table, 1601125096, 1187324692);
+    node_vector path = dijkstra(&nodes, adj_table, node_table, 21545960, 664212051);
 
     //draw_edges(&bd, &edges, node_table);
     draw_shortest_path(&bd, &path, &edges, node_table);

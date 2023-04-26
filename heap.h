@@ -19,6 +19,7 @@ void shift_up(Heap* heap, int index);
 void shift_down(Heap* heap, int index);
 void heap_push(Heap* heap, Node node);
 Node heap_pop(Heap* heap);
-void heap_update_node(Heap* heap, Node* node);
+int heap_update_node(Heap* heap, Node node);
+int heap_find(Heap* heap, Node node);
 
 #endif
