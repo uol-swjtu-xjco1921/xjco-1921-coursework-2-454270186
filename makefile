@@ -5,6 +5,7 @@ LDFLAGS =
 TARGET = main
 SRCS = main.c fileio.c errhandler.c script.c vector.c hashtable.c drawer.c log.c pathfinder.c heap.c
 OBJS = $(SRCS:.c=.o)
+TEMPFILE = map.png shortest.png
 
 .PHONY: all clean
 
@@ -17,4 +18,4 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS) $(TARGET)
+	$(RM) $(OBJS) $(TARGET) $(TEMPFILE)
