@@ -94,7 +94,6 @@ int read_edge(const char* buf, edge_vector* edges, Node* adj_table[]) {
     char* suffix = "/link>";
 
     int ret = check_line_fmt(buf, prefix, suffix);
-    printf("%s\n", buf);
     if (ret == WRONG_PREFIX) {
         log_error("Can not read line (wrong prefix)");
         return -1;
