@@ -28,14 +28,14 @@ int draw_edges(Bound* bd, edge_vector* edges, Node* table[]) {
         if (from == NULL) {
             //printf("can not found node with id %ld\n", from_id);
             log_error("can not found node with id %ld\n", from_id);
-            exit(-1);
+            return -1;
         }
 
         Node* to = search(table, to_id);
         if (to == NULL) {
             //printf("can not found node with id %ld\n", to_id);
             log_error("can not found node with id %ld\n", to_id);
-            exit(-1);
+            return -1;
         }
 
         x[0] = from->lon;
@@ -69,14 +69,14 @@ int draw_shortest_path(Bound* bd, node_vector* path, edge_vector* edges, Node* t
         if (from == NULL) {
             //printf("can not found node with id %ld\n", from_id);
             log_error("can not found node with id %ld\n", from_id);
-            exit(-1);
+            return -1;
         }
 
         Node* to = search(table, to_id);
         if (to == NULL) {
             //printf("can not found node with id %ld\n", to_id);
             log_error("can not found node with id %ld\n", to_id);
-            exit(-1);
+            return -1;
         }
 
         x[0] = from->lon;

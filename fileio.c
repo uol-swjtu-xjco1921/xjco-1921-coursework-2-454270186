@@ -19,7 +19,7 @@ int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_
     int line_cnt = 1;
     while (fgets(buf, MAX_LINE_LENGTH, map_file)) {
         DATA_TYPE type = check_type(buf);
-        printf("type is %d\n", type);
+        //printf("type is %d\n", type);
         switch (type) {
             case BOUND:
                 ret = read_bound(buf, bd);
@@ -47,7 +47,7 @@ int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_
                 break;
 
             default:
-                log_warn("Unknown type at line %d in file %s", line_cnt, filename);
+                //log_warn("Unknown type at line %d in file %s", line_cnt, filename);
         }
 
         line_cnt++;
@@ -57,7 +57,7 @@ int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_
 }
 
 DATA_TYPE check_type(const char* buf) {
-    char substr[20];
+    char substr[20] = {0};
     sscanf(buf, "%[^ ]", substr);
 
     if (strcmp(substr, "<bounding") == 0) return BOUND;

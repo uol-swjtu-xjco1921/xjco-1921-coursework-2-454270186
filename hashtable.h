@@ -7,11 +7,18 @@
 
 #define TABLE_SIZE 1000
 
+typedef struct _vis_node {
+    int64_t node_id;
+    struct _vis_node* next;
+} Vis_node;
+
 /*
     General func
 */
 int hash_func(int64_t id);
 void free_table(Node* table[]);
+void free_adj_table(Node* table[]);
+void free_vis_table(Vis_node* table[]);
 
 /*
     HashTable for <node_id, node>
@@ -35,11 +42,6 @@ int64_t get_pre_node_id(Node* table[], int64_t curr_node_id);
 /*
     HashSet for <node_id>
 */
-typedef struct _vis_node {
-    int64_t node_id;
-    struct _vis_node* next;
-} Vis_node;
-
 void vis_insert(Vis_node* table[], int64_t node_id);
 int is_node_visited(Vis_node* table[], int64_t node_id);
 

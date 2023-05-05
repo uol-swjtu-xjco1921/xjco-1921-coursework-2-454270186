@@ -114,6 +114,31 @@ Adj_list* get_adj_list(Node* table[], int64_t id) {
     }
 }
 
+void free_adj_table(Node* table[]) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (table[i] == NULL) {
+            continue;
+        }
+
+        Node* cur_node = table[i];
+        while (cur_node != NULL) {
+            Adj_list* adj = cur_node->adj_list;
+            while (adj != NULL) {
+                Adj_list* next_adj = adj->next;
+                free(adj->neighbor_node);
+                free(adj);
+                adj = next_adj;
+            }
+
+            Node* next_node = cur_node->next;
+            free(cur_node);
+            cur_node = next_node;
+        }
+    }
+
+    log_info("adj table freed");
+}
+
 void pre_insert(Node* table[], int64_t curr_node_id, int64_t pre_node_id) {
     int index = hash_func(curr_node_id);
     Node* pre_node = (Node*)malloc(sizeof(Node));
@@ -178,4 +203,22 @@ int is_node_visited(Vis_node* table[], int64_t node_id) {
     }
 
     return 0;
+}
+
+void free_vis_table(Vis_node* table[]) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (table[i] == NULL) {
+            continue;
+        }
+        
+        Vis_node* cur_node = table[i];
+        while (cur_node != NULL) {
+            Vis_node* tmp_node = cur_node;
+            cur_node = cur_node->next;
+            free(tmp_node);
+        }
+        table[i] = NULL;
+    }
+
+    log_info("vis table freed");
 }

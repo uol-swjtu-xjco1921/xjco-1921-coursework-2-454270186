@@ -114,5 +114,7 @@ node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], 
     node_vector path = print_path(pre_table, node_table, start_node_id, end_node_id);
 
     destroy_heap(heap);
+    free_table(pre_table);
+    free_vis_table(vis_table);
     return path;
 }  
