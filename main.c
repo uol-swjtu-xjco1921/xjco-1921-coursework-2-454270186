@@ -11,6 +11,12 @@
 #include "pathfinder.h"
 #include "logger.h"
 
+// Interface for user interaction
+void init();
+void clear();
+void display();
+void event_loop();
+
 Bound bd;
 edge_vector edges;
 node_vector nodes;
@@ -19,6 +25,30 @@ Node* node_table[TABLE_SIZE] = {NULL};
 Node* adj_table[TABLE_SIZE] = {NULL};
 
 char* filename;
+
+int main(int argc, char** argv) {
+    check_cmd_arg(argc, argv);
+    filename = argv[1];
+
+    init();
+
+    int ret = read_file(filename, node_table, adj_table, &edges, &nodes, &bd);
+    if (ret != 0) {
+        log_error("Failed while read map file (%s)", filename);
+        return -1;
+    }
+
+    event_loop();
+
+    // path = dijkstra(&nodes, adj_table, node_table, 21545960, 664212051);
+
+    // //draw_edges(&bd, &edges, node_table);
+    // draw_shortest_path(&bd, &path, &edges, node_table);
+
+    clear();
+
+    return 0;
+}
 
 void init() {
     memset(&bd, 0, sizeof(Bound));
@@ -101,28 +131,4 @@ void event_loop() {
         }
         display();
     }
-}
-
-int main(int argc, char** argv) {
-    check_cmd_arg(argc, argv);
-    filename = argv[1];
-
-    init();
-
-    int ret = read_file(filename, node_table, adj_table, &edges, &nodes, &bd);
-    if (ret != 0) {
-        log_error("Failed while read map file (%s)", filename);
-        return -1;
-    }
-
-    event_loop();
-
-    // path = dijkstra(&nodes, adj_table, node_table, 21545960, 664212051);
-
-    // //draw_edges(&bd, &edges, node_table);
-    // draw_shortest_path(&bd, &path, &edges, node_table);
-
-    clear();
-
-    return 0;
 }
