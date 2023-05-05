@@ -13,10 +13,18 @@ typedef enum {
     SPEED,
 } DATA_TYPE;
 
+/*
+    FILE Read
+*/
 int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_vector* edges, node_vector* nodes, Bound* bd);
 DATA_TYPE check_type(const char* buf);
 int read_bound(const char* buf, Bound* bd);
 int read_edge(const char* buf, edge_vector* edges, Node* adj_table[]);
 int read_node(const char* buf, node_vector* nodes, Node* node_table[]);
+
+/*
+    FILE Write
+*/
+
 
 #endif

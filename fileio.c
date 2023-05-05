@@ -73,7 +73,11 @@ int read_bound(const char* buf, Bound* bd) {
     char* suffix = "/bounding>";
 
     int ret = check_line_fmt(buf, prefix, suffix);
-    if (ret == -1) {
+    if (ret == WRONG_PREFIX) {
+        log_error("Can not read line (wrong prefix)");
+        return -1;
+    } else if (ret == WRONG_SUFFIX) {
+        log_error("Can not read line (wrong suffix)");
         return -1;
     }
 
@@ -93,10 +97,10 @@ int read_edge(const char* buf, edge_vector* edges, Node* adj_table[]) {
     printf("%s\n", buf);
     if (ret == WRONG_PREFIX) {
         log_error("Can not read line (wrong prefix)");
-        exit(-1);
+        return -1;
     } else if (ret == WRONG_SUFFIX) {
         log_error("Can not read line (wrong suffix)");
-        exit(-1);
+        return -1;
     }
 
     Edge edge;
@@ -117,11 +121,10 @@ int read_node(const char* buf, node_vector* nodes, Node* node_table[]) {
     int ret = check_line_fmt(buf, prefix, suffix);
     if (ret == WRONG_PREFIX) {
         log_error("Can not read line (wrong prefix)");
-        exit(-1);
+        return -1;
     } else if (ret == WRONG_SUFFIX) {
-        //printf("ERROR: Can not read line (wrong suffix)\n");
         log_error("Can not read line (wrong suffix)");
-        exit(-1);
+        return -1;
     }
 
     int64_t id = -1;
