@@ -69,3 +69,6 @@ range_y.txt
 edge.dat
 
 makefile.test
+
+# cmake
+build

@@ -40,8 +40,8 @@ int main(int argc, char** argv) {
         return -1;
     }
     
-    window_init(&bd, &edges, &nodes, &path, node_table, adj_table);
-    window_start();
+    // window_init(&bd, &edges, &nodes, &path, node_table, adj_table);
+    window_start(filename);
     return 0;
 
     event_loop();

@@ -44,7 +44,10 @@ node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], 
     Heap* heap = create_heap(nodes->size);
     Node* pre_table[TABLE_SIZE];
     memset(pre_table, 0, sizeof(pre_table));
-    Vis_node* vis_table[TABLE_SIZE] = {NULL};
+    Vis_node* vis_table[TABLE_SIZE];
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        vis_table[i] = NULL;
+    }
 
     // initialize heap and dis
     for (int i = 0; i < nodes->size; i++) {
