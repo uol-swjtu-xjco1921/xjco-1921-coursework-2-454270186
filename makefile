@@ -15,3 +15,6 @@ run:
 .PHONY: clean
 clean:
 	rm -rf build
+
+test:
+	gcc plplot.c -o plplot `pkg-config --cflags --libs gtk+-3.0`

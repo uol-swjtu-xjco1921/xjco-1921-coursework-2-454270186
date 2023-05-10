@@ -11,6 +11,7 @@
 #include "pathfinder.h"
 #include "logger.h"
 #include "display.h"
+#include "window.h"
 
 // Interface for user interaction
 void init();
@@ -38,6 +39,10 @@ int main(int argc, char** argv) {
         log_error("Failed while read map file (%s)", filename);
         return -1;
     }
+    
+    window_init(&bd, &edges, &nodes, &path, node_table, adj_table);
+    window_start();
+    return 0;
 
     event_loop();
 

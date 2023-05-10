@@ -17,5 +17,5 @@ pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 # add excutable file
 add_executable(main main.c ${SOURCES})
 
-target_link_libraries(main -lplplot)
+target_link_libraries(main -lplplot ${GTK3_LIBRARIES})
 target_include_directories(main PRIVATE ${GTK3_INCLUDE_DIRS})
