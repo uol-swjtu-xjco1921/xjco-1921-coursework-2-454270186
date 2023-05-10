@@ -55,6 +55,7 @@ void window_clear() {
     free_adj_table(win_adj_table);
 }
 
+// callback
 void draw_the_map() {
     int ret = draw_edges(win_bd, win_edges, win_node_table);
     if (ret != 0) {
@@ -66,6 +67,7 @@ void draw_the_map() {
     map_window_renderer();
 }
 
+// callback
 void back_to() {
     gtk_widget_hide(GTK_WIDGET(map_window));
     gtk_widget_show(GTK_WIDGET(window));
