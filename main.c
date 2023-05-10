@@ -10,6 +10,7 @@
 #include "errhandler.h"
 #include "pathfinder.h"
 #include "logger.h"
+#include "display.h"
 
 // Interface for user interaction
 void init();
@@ -69,19 +70,6 @@ void clear() {
     free_adj_table(adj_table);
 }
 
-void display() {
-    printf("\n\n\n");
-    printf("Please select the following options\n");
-    printf("------------------------------------------\n");
-    printf("1. Draw the map\n");
-    printf("2. Draw the shorest route\n");
-    printf("3. Draw the fast route\n");
-    printf("4. Draw the shorest route (constrain)\n");
-    printf("5. Modify attributes\n");
-    printf("6. Exit\n");
-    printf("------------------------------------------\n");
-}
-
 void event_loop() {
     int choice = -1;
     int ret = -1;
@@ -118,9 +106,32 @@ void event_loop() {
                 INFO("Shortest route is successfully drawn in <shortest.png>!");
                 break;
 
+            case 3:
+                INFO("Draw fast route");
+                break;
+
+            case 4:
+                INFO("Draw POI");
+                break;
+
+            case 5:
+                int op = -1;
+                display_modify_map();
+                scanf("%d", &op);
+                switch (op) {
+                    case 1:
+                        add_link(filename);
+                        break;
+                }
+                break;
+
             case 6:
                 printf("Bye Bye\n");
                 return;
+
+            default:
+                ERROR("Invalid option! Choose again: ");
+                continue;
         }
         clear();
         init();

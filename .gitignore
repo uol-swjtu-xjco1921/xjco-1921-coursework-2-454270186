@@ -67,3 +67,5 @@ plplot.c
 range_x.txt
 range_y.txt
 edge.dat
+
+makefile.test

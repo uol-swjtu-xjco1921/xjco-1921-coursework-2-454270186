@@ -2,10 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <unistd.h>
 #include "log.h"
 #include "fileio.h"
 #include "errhandler.h"
+#include "logger.h"
 
+int64_t last_link_id = 0;
+
+/*
+    FILE Read
+*/
 int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_vector* edges, node_vector* nodes, Bound* bd){
     FILE* map_file = fopen(filename, "r");
     if (map_file == NULL) {
@@ -106,6 +113,7 @@ int read_edge(const char* buf, edge_vector* edges, Node* adj_table[]) {
     sscanf(buf,
            "<link id=%ld node=%ld node=%ld way=%d length=%lf veg=%lf arch=%lf land=%lf POI=%d,;/link>",
            &edge.id, &edge.from, &edge.to, &edge.way, &edge.length, &edge.veg, &edge.arch, &edge.land, &edge.POI);
+    last_link_id = (labs(edge.id) >= last_link_id) ? labs(edge.id) : last_link_id;
     adj_insert(adj_table, edge.from, edge.to, edge.length);
     adj_insert(adj_table, edge.to, edge.from, edge.length);
     e_vector_push_back(edges, edge);
@@ -144,4 +152,54 @@ int read_node(const char* buf, node_vector* nodes, Node* node_table[]) {
     insert(node_table, id, lat, lon);
 
     return 0;
+}
+
+/* 
+    FILE Write
+*/
+int add_link(const char* filename) {
+    if (access(filename, F_OK) != 0) {
+        log_error("File does not exist");
+        return -1;
+    }
+
+    FILE* add_link_fd = fopen(filename, "a");
+    fseek(add_link_fd, 0, SEEK_END);
+
+    char data_buf[128] = {0};
+    int64_t node1_id, node2_id;
+    double length;
+    printf("Enter node 1 id: ");
+    scanf("%ld", &node1_id);
+    printf("Enter node 2 id: ");
+    scanf("%ld", &node2_id);
+    printf("Enter link length: ");
+    scanf("%lf", &length);
+    fflush(stdin);
+
+    int ret = sprintf(data_buf, 
+                      "<link id=-%ld node=%ld node=%ld way=0.0 length=%lf veg=0.0 arch=0.0 land=0.0 POI=,;/link>\n",
+                      ++last_link_id, node1_id, node2_id, length);
+    if (ret <= 0) {
+        log_error("Failed while write into data buffer");
+    }
+
+    fputs(data_buf, add_link_fd);
+    fflush(add_link_fd);
+    INFO("New link is successfully added!");
+
+    fclose(add_link_fd);
+    return 0;
+}
+
+int add_speed_lim(const char* filename) {
+    if (access(filename, F_OK) != 0) {
+        log_error("File does not exist");
+        return -1;
+    }
+
+    FILE* add_speed_fd = fopen(filename, "a");
+    fseek(add_speed_fd, 0, SEEK_END);
+
+    
 }
