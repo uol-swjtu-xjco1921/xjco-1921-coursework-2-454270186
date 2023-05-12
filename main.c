@@ -40,7 +40,11 @@ int main(int argc, char** argv) {
         log_error("Failed while read map file (%s)", filename);
         return -1;
     }
-    
+
+    for (int i = 0; i < edges.size; i++) {
+        printf("from_id is %ld, to_id is %ld\n", edges.edges[i].from, edges.edges[i].to);
+    }
+    return 0;
     window_start();
     return 0;
 

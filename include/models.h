@@ -28,7 +28,7 @@ typedef struct {
     double veg;
     double arch;
     double land;
-    int32_t POI;
+    int32_t POI[20];
 } Edge;
 
 typedef struct {

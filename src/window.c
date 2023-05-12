@@ -14,6 +14,7 @@ GObject* window;
 GObject* map_window;
 GObject* shortest_window;
 GObject* input_window;
+GObject* error_window;
 GObject* button;
 GObject* entry;
 GError* error = NULL;
@@ -79,7 +80,7 @@ void get_user_input() {
 }
 
 void get_user_input_fast() {
-    get_input__fast_renderer();
+    get_input_fast_renderer();
 }
 
 /// @brief input.xml Next button clicked
@@ -90,6 +91,8 @@ void deal_input() {
     int ret = sscanf(input, "%ld %ld", &start, &end);
     if (ret != 2) {
         // TODO: 展示错误页面
+        error_window_renderer();
+        return;
     }
 
     // shortest route
@@ -131,6 +134,10 @@ void hide_input() {
     gtk_widget_hide(GTK_WIDGET(input_window));
 }
 
+void hide_error() {
+    gtk_widget_hide(GTK_WIDGET(error_window));
+}
+
 /*
     Renderer
 */
@@ -152,7 +159,7 @@ void main_window_renderer() {
     g_signal_connect(button, "clicked", G_CALLBACK(get_user_input), NULL);
 
     button = gtk_builder_get_object(builder, "button3");
-    g_signal_connect(button, "clicked", G_CALLBACK(get_user_input), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(get_user_input_fast), NULL);
 
     gtk_widget_show_all(GTK_WIDGET(window));
 }
@@ -191,6 +198,10 @@ void shortest_window_renderer() {
     gtk_widget_show_all(GTK_WIDGET(shortest_window));
 }
 
+void fastest_window_renderer() {
+    
+}
+
 void get_input_renderer() {
     builder = gtk_builder_new();
     if (gtk_builder_add_from_file(builder, "./ui/input.xml", &error) == 0) {
@@ -214,7 +225,7 @@ void get_input_renderer() {
     gtk_widget_show_all(GTK_WIDGET(input_window));
 }
 
-void get_input__fast_renderer() {
+void get_input_fast_renderer() {
     builder = gtk_builder_new();
     if (gtk_builder_add_from_file(builder, "./ui/input.xml", &error) == 0) {
         g_printerr("Error loading ui file: %s\n", error->message);
@@ -232,7 +243,24 @@ void get_input__fast_renderer() {
     // next button
     entry = gtk_builder_get_object(builder, "entry_input");
     button = gtk_builder_get_object(builder, "next_button");
-    g_signal_connect(button, "clicked", G_CALLBACK(deal_input), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(deal_fast_input), NULL);
 
     gtk_widget_show_all(GTK_WIDGET(input_window));
+}
+
+void error_window_renderer() {
+    builder = gtk_builder_new();
+    if (gtk_builder_add_from_file(builder, "./ui/error.xml", &error) == 0) {
+        g_printerr("Error loading ui file: %s\n", error->message);
+        g_clear_error(&error);
+        return;
+    }
+
+    error_window = gtk_builder_get_object (builder, "invalid_window");
+    g_signal_connect (error_window, "destroy", G_CALLBACK (window_quit), NULL);
+
+    button = gtk_builder_get_object(builder, "back_button");
+    g_signal_connect(button, "clicked", G_CALLBACK(hide_error), NULL);
+
+    gtk_widget_show_all(GTK_WIDGET(error_window));
 }
