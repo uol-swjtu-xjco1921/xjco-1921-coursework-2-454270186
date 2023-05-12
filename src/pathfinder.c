@@ -44,10 +44,7 @@ node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], 
     Heap* heap = create_heap(nodes->size);
     Node* pre_table[TABLE_SIZE];
     memset(pre_table, 0, sizeof(pre_table));
-    Vis_node* vis_table[TABLE_SIZE];
-    for (int i = 0; i < TABLE_SIZE; i++) {
-        vis_table[i] = NULL;
-    }
+    Vis_node* vis_table[TABLE_SIZE] = {NULL};
 
     // initialize heap and dis
     for (int i = 0; i < nodes->size; i++) {
@@ -66,7 +63,6 @@ node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], 
     }
 
     if (is_empty(heap)) {
-        //printf("Error: no start node\n");
         log_error("Error: no start node");
         node_vector empty;
         n_vector_init(&empty, 0);
@@ -79,12 +75,10 @@ node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], 
         vis_insert(vis_table, curr_node.id);
         if (curr_node.id == end_node_id) {
             // reach the end
-            //printf("the distance between start node and end node is %lf\n", curr_node.dis);
             log_info("the distance between start node and end node is %lf", curr_node.dis);
             break;
         }
-        // printf("%ld node's dis is %lf\n", curr_node.id, curr_node.dis);
-        // printf("vis is %d\n", curr_node.is_visited);
+
         Adj_list* adj = get_adj_list(adj_table, curr_node.id);
         while (adj != NULL) {
             Node* neighbor_node = adj->neighbor_node;
@@ -96,11 +90,9 @@ node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], 
                 int ret = -1;
                 if (is_contain(heap, neighbor_node->id)) {
                     ret = heap_update_node(heap, *neighbor_node);
-                    //printf("Updating pre_table: %ld's pre node is set to %ld\n", neighbor_node->id, curr_node.id);
                     log_debug("Updating pre_table: %ld's pre node is set to %ld", neighbor_node->id, curr_node.id);
                 } else {
                     heap_push(heap, *neighbor_node);
-                    //printf("pushing pre_table: %ld's pre node is set to %ld\n", neighbor_node->id, curr_node.id);
                     log_debug("pushing pre_table: %ld's pre node is set to %ld", neighbor_node->id, curr_node.id);
                 }
 

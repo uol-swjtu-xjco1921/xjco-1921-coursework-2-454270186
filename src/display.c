@@ -3,7 +3,7 @@
 #include "logger.h"
 
 void display() {
-    printf("\n\n\n");
+    printf("\n");
     printf("Please select the following options\n");
     printf("------------------------------------------\n");
     printf("1. Draw the map\n");

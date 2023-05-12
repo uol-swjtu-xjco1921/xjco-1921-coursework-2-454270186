@@ -13,7 +13,7 @@ int64_t last_link_id = 0;
 /*
     FILE Read
 */
-int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_vector* edges, node_vector* nodes, Bound* bd){
+int read_file(const char* filename, Node* node_table[], Node* adj_table[], Node* spd_adj_table[], edge_vector* edges, node_vector* nodes, Bound* bd){
     FILE* map_file = fopen(filename, "r");
     if (map_file == NULL) {
         //perror("map file open");
@@ -36,7 +36,7 @@ int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_
                 break;
 
             case LINK:
-                ret = read_edge(buf, edges, adj_table);
+                ret = read_edge(buf, edges, adj_table, LENGTH);
                 if (ret != 0) {
                     return ret;
                 }
@@ -47,10 +47,6 @@ int read_file(const char* filename, Node* node_table[], Node* adj_table[], edge_
                 if (ret != 0) {
                     return ret;
                 }
-                break;
-            
-            case SPEED:
-                // TODO
                 break;
 
             default:
@@ -96,7 +92,7 @@ int read_bound(const char* buf, Bound* bd) {
     return 0;
 }
 
-int read_edge(const char* buf, edge_vector* edges, Node* adj_table[]) {
+int read_edge(const char* buf, edge_vector* edges, Node* adj_table[], EDGE_READ_MODE mode) {
     char* prefix = "<link";
     char* suffix = "/link>";
 
@@ -110,14 +106,29 @@ int read_edge(const char* buf, edge_vector* edges, Node* adj_table[]) {
     }
 
     Edge edge;
-    sscanf(buf,
-           "<link id=%ld node=%ld node=%ld way=%d length=%lf veg=%lf arch=%lf land=%lf POI=%d,;/link>",
-           &edge.id, &edge.from, &edge.to, &edge.way, &edge.length, &edge.veg, &edge.arch, &edge.land, &edge.POI);
-    last_link_id = (labs(edge.id) >= last_link_id) ? labs(edge.id) : last_link_id;
-    adj_insert(adj_table, edge.from, edge.to, edge.length);
-    adj_insert(adj_table, edge.to, edge.from, edge.length);
+    if (mode == LENGTH) {
+        sscanf(buf,
+               "<link id=%ld node=%ld node=%ld way=%d length=%lf veg=%lf arch=%lf land=%lf POI=%d,;/link>",
+               &edge.id, &edge.from, &edge.to, &edge.way, &edge.length, &edge.veg, &edge.arch, &edge.land, &edge.POI);
+        adj_insert(adj_table, edge.from, edge.to, edge.length);
+        adj_insert(adj_table, edge.to, edge.from, edge.length);
+    } else if (mode == SPEED){
+        char* speed_line = strstr(buf, "speed=");
+        if (speed_line == NULL) {
+            log_error("Missing speed attribute, set default value of 10.0");
+            return -1;
+        } else {
+            sscanf(buf,
+                   "<link id=%ld node=%ld node=%ld way=%d length=%lf speed=%lf veg=%lf arch=%lf land=%lf POI=%d,;/link>",
+                   &edge.id, &edge.from, &edge.to, &edge.way, &edge.length, &edge.speed, &edge.veg, &edge.arch, &edge.land, &edge.POI);
+            adj_insert(adj_table, edge.from, edge.to, edge.speed);
+            adj_insert(adj_table, edge.to, edge.from, edge.speed);
+        }
+    }
+    
+    // last_link_id = (labs(edge.id) >= last_link_id) ? labs(edge.id) : last_link_id;
+    
     e_vector_push_back(edges, edge);
-
     return 0;
 }
 

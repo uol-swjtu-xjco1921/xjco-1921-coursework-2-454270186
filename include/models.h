@@ -24,6 +24,7 @@ typedef struct {
     int64_t to;
     int32_t way;
     double length;
+    double speed;
     double veg;
     double arch;
     double land;

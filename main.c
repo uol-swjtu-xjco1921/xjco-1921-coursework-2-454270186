@@ -25,6 +25,7 @@ node_vector nodes;
 node_vector path;
 Node* node_table[TABLE_SIZE] = {NULL};
 Node* adj_table[TABLE_SIZE] = {NULL};
+Node* spd_adj_table[TABLE_SIZE] = {NULL};
 
 char* filename;
 
@@ -34,25 +35,18 @@ int main(int argc, char** argv) {
 
     init();
 
-    int ret = read_file(filename, node_table, adj_table, &edges, &nodes, &bd);
+    int ret = read_file(filename, node_table, adj_table, spd_adj_table, &edges, &nodes, &bd);
     if (ret != 0) {
         log_error("Failed while read map file (%s)", filename);
         return -1;
     }
     
-    // window_init(&bd, &edges, &nodes, &path, node_table, adj_table);
-    window_start(filename);
+    window_start();
     return 0;
 
     event_loop();
 
-    // path = dijkstra(&nodes, adj_table, node_table, 21545960, 664212051);
-
-    // //draw_edges(&bd, &edges, node_table);
-    // draw_shortest_path(&bd, &path, &edges, node_table);
-
     clear();
-
     return 0;
 }
 
@@ -88,6 +82,7 @@ void event_loop() {
                     return;
                 }
                 INFO("Map is successfully drawn in <map.png>!");
+                window_start();
                 break;
             
             case 2:
@@ -98,7 +93,7 @@ void event_loop() {
                     while (getchar() != '\n');
                     printf("Enter again: ");
                 }
-                path = dijkstra(&nodes, adj_table, node_table, start, end);
+                path = dijkstra(&nodes, adj_table, node_table, -2502, -2506);
                 if (path.size == 0) {
                     ERROR("Unexpect internal error while find shortest route");
                     break;
@@ -109,6 +104,7 @@ void event_loop() {
                     break;
                 }
                 INFO("Shortest route is successfully drawn in <shortest.png>!");
+                window_start_shortest();
                 break;
 
             case 3:
@@ -140,7 +136,7 @@ void event_loop() {
         }
         clear();
         init();
-        int ret = read_file(filename, node_table, adj_table, &edges, &nodes, &bd);
+        int ret = read_file(filename, node_table, adj_table, spd_adj_table, &edges, &nodes, &bd);
         if (ret != 0) {
             log_error("Failed while read map file (%s)", filename);
             return;
