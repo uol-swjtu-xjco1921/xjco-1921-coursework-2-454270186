@@ -41,16 +41,17 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    for (int i = 0; i < edges.size; i++) {
-        int cnt = 0;
-        printf("POI = ");
-        while (edges.edges[i].POI[cnt] != 0) {
-            printf("%d ", edges.edges[i].POI[cnt]);
-            cnt++;
-        }
-        printf("\n");
-    }
-    return 0;
+    // path = dijkstra(&nodes, spd_adj_table, node_table, 21069423, 244449810);
+    // if (path.size == 0) {
+    //     ERROR("Unexpect internal error while find shortest route");
+    //     return -1;
+    // }
+    // ret = draw_shortest_path(&bd, &path, &edges, node_table);
+    // if (ret != 0) {
+    //     ERROR("Unexpect internal error");
+    //     return -1;
+    // }
+    // return 0;
     window_start();
     return 0;
 
@@ -108,7 +109,7 @@ void event_loop() {
                     ERROR("Unexpect internal error while find shortest route");
                     break;
                 }
-                ret = draw_shortest_path(&bd, &path, &edges, node_table);
+                ret = draw_path(&bd, &path, &edges, node_table,0);
                 if (ret != 0) {
                     ERROR("Unexpect internal error");
                     break;

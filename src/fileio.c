@@ -36,7 +36,7 @@ int read_file(const char* filename, Node* node_table[], Node* adj_table[], Node*
                 break;
 
             case LINK:
-                ret = read_edge(buf, edges, adj_table);
+                ret = read_edge(buf, edges, adj_table, spd_adj_table);
                 if (ret != 0) {
                     return ret;
                 }
@@ -91,7 +91,7 @@ int read_bound(const char* buf, Bound* bd) {
     return 0;
 }
 
-int read_edge(char* buf, edge_vector* edges, Node* adj_table[]) {
+int read_edge(char* buf, edge_vector* edges, Node* adj_table[], Node* spd_table[]) {
     char* prefix = "<link";
     char* suffix = "/link>";
 
@@ -142,8 +142,14 @@ int read_edge(char* buf, edge_vector* edges, Node* adj_table[]) {
         token = strtok(NULL, "=");
     }
     
+    // insert length adjacent hashtable
     adj_insert(adj_table, edge.from, edge.to, edge.length);
     adj_insert(adj_table, edge.to, edge.from, edge.length);
+
+    // insert speed adjacent hashtable
+    adj_insert(spd_table, edge.from, edge.to, edge.speed);
+    adj_insert(spd_table, edge.to, edge.from, edge.speed);
+
     e_vector_push_back(edges, edge);
     return 0;
 }

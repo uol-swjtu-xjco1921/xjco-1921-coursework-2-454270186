@@ -17,7 +17,7 @@ typedef enum {
 */
 int read_file(const char* filename, Node* node_table[], Node* adj_table[], Node* spd_adj_table[], edge_vector* edges, node_vector* nodes, Bound* bd);
 int read_bound(const char* buf, Bound* bd);
-int read_edge(char* buf, edge_vector* edges, Node* adj_table[]);
+int read_edge(char* buf, edge_vector* edges, Node* adj_table[], Node* spd_table[]);
 int read_node(const char* buf, node_vector* nodes, Node* node_table[]);
 DATA_TYPE check_type(const char* buf);
 

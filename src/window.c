@@ -13,6 +13,7 @@ GtkBuilder* builder;
 GObject* window;
 GObject* map_window;
 GObject* shortest_window;
+GObject* fastest_window;
 GObject* input_window;
 GObject* error_window;
 GObject* button;
@@ -63,16 +64,25 @@ void draw_the_map() {
 }
 
 void draw_shortest() {
-    if (access("shorest.png", F_OK) != 0) {
-        int ret = draw_shortest_path(&bd, &path, &edges, node_table);
-        if (ret != 0) {
-            ERROR("Unexpect internal error");
-            return;
-        }
+    int ret = draw_path(&bd, &path, &edges, node_table, 0);
+    if (ret != 0) {
+        ERROR("Unexpect internal error");
+        return;
     }
 
     gtk_widget_hide(GTK_WIDGET(input_window));
     shortest_window_renderer();
+}
+
+void draw_fastest() {
+    int ret = draw_path(&bd, &path, &edges, node_table, 1);
+    if (ret != 0) {
+        ERROR("Unexpect internal error");
+        return;
+    }
+
+    gtk_widget_hide(GTK_WIDGET(input_window));
+    fastest_window_renderer();
 }
 
 void get_user_input() {
@@ -118,6 +128,8 @@ void deal_fast_input() {
     if (path.size == 0) {
         ERROR("Unexpect internal error while find shortest route");
     }
+
+    draw_fastest();
 }
 
 void map_back_to_main() {
@@ -127,6 +139,11 @@ void map_back_to_main() {
 
 void shortest_back_to_main() {
     gtk_widget_hide(GTK_WIDGET(shortest_window));
+    gtk_widget_show(GTK_WIDGET(window));
+}
+
+void fastest_back_to_main() {
+    gtk_widget_hide(GTK_WIDGET(fastest_window));
     gtk_widget_show(GTK_WIDGET(window));
 }
 
@@ -199,7 +216,20 @@ void shortest_window_renderer() {
 }
 
 void fastest_window_renderer() {
-    
+    builder = gtk_builder_new();
+    if (gtk_builder_add_from_file(builder, "./ui/fastest.xml", &error) == 0) {
+        g_printerr("Error loading ui file: %s\n", error->message);
+        g_clear_error(&error);
+        return;
+    }
+
+    fastest_window = gtk_builder_get_object (builder, "main_window");
+    g_signal_connect (fastest_window, "destroy", G_CALLBACK (window_quit), NULL);
+
+    button = gtk_builder_get_object(builder, "back_button");
+    g_signal_connect(button, "clicked", G_CALLBACK(fastest_back_to_main), NULL);
+
+    gtk_widget_show_all(GTK_WIDGET(fastest_window));
 }
 
 void get_input_renderer() {

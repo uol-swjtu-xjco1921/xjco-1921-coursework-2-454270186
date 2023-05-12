@@ -50,9 +50,13 @@ int draw_edges(Bound* bd, edge_vector* edges, Node* table[]) {
     return 0;
 }
  
-int draw_shortest_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[]) {
+int draw_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[], int mode) {
     plsdev("png");
-    plsfnam("shortest.png");
+    if(mode == 0) {
+        plsfnam("shortest.png"); 
+    } else {
+        plsfnam("fastest.png");
+    }
     plprec(1, 3);
     plinit();
     log_info("plplot initialized");
@@ -104,7 +108,6 @@ int draw_shortest_path(Bound* bd, node_vector* path, edge_vector* edges, Node* t
     plend();
     return 0;
 }
-
 
 /// @brief 
 /// @param edges 
