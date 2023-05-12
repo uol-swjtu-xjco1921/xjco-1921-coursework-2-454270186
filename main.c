@@ -42,7 +42,13 @@ int main(int argc, char** argv) {
     }
 
     for (int i = 0; i < edges.size; i++) {
-        printf("from_id is %ld, to_id is %ld\n", edges.edges[i].from, edges.edges[i].to);
+        int cnt = 0;
+        printf("POI = ");
+        while (edges.edges[i].POI[cnt] != 0) {
+            printf("%d ", edges.edges[i].POI[cnt]);
+            cnt++;
+        }
+        printf("\n");
     }
     return 0;
     window_start();

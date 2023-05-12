@@ -107,6 +107,7 @@ int read_edge(char* buf, edge_vector* edges, Node* adj_table[]) {
     Edge edge;
     edge.from = edge.to = 0;
     edge.speed = 10;
+    memset(edge.POI, 0, sizeof(edge.POI));
 
     char* token = strtok(buf, "= ");
     while (token != NULL) {
@@ -128,7 +129,7 @@ int read_edge(char* buf, edge_vector* edges, Node* adj_table[]) {
             sscanf(token, "%lf", &edge.speed);
         } else if (strcmp(token, "POI") == 0) {
             int poi_cnt = 0;
-            token = strtok(NULL, " ");
+            token = strtok(NULL, ",");
             while (token != NULL) {
                 sscanf(token, "%d", &edge.POI[poi_cnt++]);
 
