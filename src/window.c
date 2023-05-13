@@ -15,6 +15,7 @@ GObject* window;
 GObject* map_window;
 GObject* shortest_window;
 GObject* fastest_window;
+GObject* loc_shortest_window;
 GObject* input_window;
 GObject* loc_input_window;
 GObject* cons_window;
@@ -156,33 +157,44 @@ void deal_loc_input() {
 
     // check input is ID or location
     int ret = -1;
+    int64_t node_id = 0;
     char* space = strchr(input, ' ');
     if (space == NULL) {
         // ID
-        int64_t node_id;
         ret = sscanf(input, "%ld", &node_id);
         if (ret != 1) {
             // ERROR
+            return;
         }
-
-        node_vector path_2;
-        n_vector_init(&path_2, 10);
-
-        path = dijkstra(&nodes, spd_adj_table, node_table, start, node_id);
-        if (path.size == 0) {
-            ERROR("Unexpect internal error while find shortest route");
-        }
-        path_2 = dijkstra(&nodes, spd_adj_table, node_table, node_id, end);
-        if (path_2.size == 0) {
-            ERROR("Unexpect internal error while find shortest route");
-        }
-
-        draw_loc_path(&bd, &path, &path_2, &edges, node_table);
-
     } else {
         // location
+        double lat, lon;
+        ret = sscanf(input, "%lf %lf", &lat, &lon);
+        if (ret != 2) {
+            // ERROR
+            return;
+        }
 
+        node_id = search_by_loc(node_table, lat, lon);
+        if (node_id == 0) {
+            // ERROR
+            return;
+        }
     }
+
+    node_vector path_2;
+    n_vector_init(&path_2, 10);
+    path = dijkstra(&nodes, adj_table, node_table, start, node_id);
+    path_2 = dijkstra(&nodes, adj_table, node_table, node_id, end);
+    if (path.size == 0 || path_2.size == 0) {
+        ERROR("Unexpect internal error while find shortest route");
+    }
+
+    draw_loc_path(&bd, &path, &path_2, &edges, node_table);
+    hide_cons();
+    hide_loc_input();
+    hide_input();
+    loc_shortest_window_renderer();
 }
 
 void map_back_to_main() {
@@ -197,6 +209,11 @@ void shortest_back_to_main() {
 
 void fastest_back_to_main() {
     gtk_widget_hide(GTK_WIDGET(fastest_window));
+    gtk_widget_show(GTK_WIDGET(window));
+}
+
+void location_back_to_main() {
+    gtk_widget_hide(GTK_WIDGET(loc_shortest_window));
     gtk_widget_show(GTK_WIDGET(window));
 }
 
@@ -315,6 +332,23 @@ void constraint_window_renderer() {
     g_signal_connect(button, "clicked", G_CALLBACK(hide_cons), NULL);
 
     gtk_widget_show_all(GTK_WIDGET(cons_window));
+}
+
+void loc_shortest_window_renderer() {
+    builder = gtk_builder_new();
+    if (gtk_builder_add_from_file(builder, "./ui/location.xml", &error) == 0) {
+        g_printerr("Error loading ui file: %s\n", error->message);
+        g_clear_error(&error);
+        return;
+    }
+
+    loc_shortest_window = gtk_builder_get_object (builder, "main_window");
+    g_signal_connect (loc_shortest_window, "destroy", G_CALLBACK (window_quit), NULL);
+
+    button = gtk_builder_get_object(builder, "back_button");
+    g_signal_connect(button, "clicked", G_CALLBACK(location_back_to_main), NULL);
+
+    gtk_widget_show_all(GTK_WIDGET(loc_shortest_window));
 }
 
 void get_input_renderer() {

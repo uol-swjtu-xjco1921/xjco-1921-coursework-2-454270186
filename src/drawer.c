@@ -108,7 +108,7 @@ int draw_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[], i
         r++;
     }
 
-    log_info("Shortest route drawn successfully");
+    log_info("%s route drawn successfully", (mode == 0) ? "Shortest" : "Fastest");
     plend();
     return 0;
 }

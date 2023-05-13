@@ -27,6 +27,7 @@ void insert(Node* table[], int64_t id, double lat, double lon) {
     // insert the node using head inserting
     if (table[index] == NULL) {
         table[index] = new_node;
+        new_node->next = NULL;
     } else {
         new_node->next = table[index];
         table[index] = new_node;
@@ -41,16 +42,40 @@ Node* search(Node* table[], int64_t id) {
     int index = hash_func(id);
 
     // traverse the linked list in hash table
-    Node* curr_node = table[index];
-    while (curr_node != NULL) {
-        if (curr_node->id == id) {
-            return curr_node;
+    Node* cur_node = table[index];
+    while (cur_node != NULL) {
+        if (cur_node->id == id) {
+            return cur_node;
         }
-        curr_node = curr_node->next;
+        cur_node = cur_node->next;
     }
 
     // Not Found
     return NULL;
+}
+
+/// @brief find node by given location
+/// @param table 
+/// @param lat 
+/// @param lon 
+/// @return the node id if found, 0.0 if not found
+int64_t search_by_loc(Node* table[], double lat, double lon) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (table[i] == NULL) {
+            continue;
+        }
+
+        Node* cur_node = table[i];
+        while (cur_node != NULL) {
+            if (cur_node->lat == lat && cur_node->lon == lon) {
+                return cur_node->id;
+            }
+            cur_node = cur_node->next;
+        }
+    }
+
+    // not found
+    return 0.0;
 }
 
 /// @brief 

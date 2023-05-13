@@ -33,6 +33,7 @@ void get_loc_renderer();
 void shortest_window_renderer();
 void fastest_window_renderer();
 void constraint_window_renderer();
+void loc_shortest_window_renderer();
 void error_window_renderer();
 
 /* Callback func */

@@ -25,6 +25,7 @@ void free_vis_table(Vis_node* table[]);
 */
 void insert(Node* table[], int64_t id, double lat, double lon);
 Node* search(Node* table[], int64_t id);
+int64_t search_by_loc(Node* table[], double lat, double lon);
 
 /*
     HashTable for <node_id, adj_list>
