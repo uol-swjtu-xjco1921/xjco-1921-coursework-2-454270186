@@ -93,7 +93,6 @@ void event_loop() {
                     return;
                 }
                 INFO("Map is successfully drawn in <map.png>!");
-                window_start();
                 break;
             
             case 2:
@@ -115,7 +114,6 @@ void event_loop() {
                     break;
                 }
                 INFO("Shortest route is successfully drawn in <shortest.png>!");
-                window_start_shortest();
                 break;
 
             case 3:

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.0" />
+
+  <object class="GtkWindow" id="main_window">
+    <property name="title">Constrains</property>
+    <property name="default-width">300</property>
+    <property name="default-height">200</property>
+    <signal name="destroy" handler="on_main_window_destroy" />
+
+    <child>
+      <object class="GtkGrid" id="main_grid">
+        <!-- <property name="orientation">VERTICAL</property> -->
+
+        <child>
+            <object class="GtkLabel" id="title_label">
+                <property name="label">Please select the following options</property>
+            </object>
+            <packing>
+                <property name="top-attach">0</property>
+                <property name="width">1</property>
+            </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="location">
+            <property name="label">1. Location</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="POI">
+            <property name="label">2. POI</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="back_button">
+            <property name="label">Back</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

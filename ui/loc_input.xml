@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="main_window">
+    <property name="title">Input</property>
+    <property name="can_focus">False</property>
+    <property name="default_width">350</property>
+    <!-- <property name="default_height">250</property> -->
+    <child>
+    <object class="GtkBox" id="box_main">
+      <property name="visible">True</property>
+      <property name="orientation">vertical</property>
+      <child>
+        <object class="GtkLabel" id="label_prompt">
+          <property name="visible">True</property>
+          <property name="label">Enter node id or node location:  </property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkLabel" id="label_example">
+          <property name="visible">True</property>
+          <property name="label">(e.g. [nodeID]: -2502  OR [LOCATION]: 53.809911 -1.552028)</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkEntry" id="entry_input">
+          <property name="visible">True</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkBox" id="box_button">
+          <property name="visible">True</property>
+          <property name="homogeneous">True</property>
+          <child>
+            <object class="GtkButton" id="back_button">
+              <property name="label">Back</property>
+              <property name="visible">True</property>
+              <property name="height-request">100</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkButton" id="next_button">
+              <property name="label">Next</property>
+              <property name="visible">True</property>
+              <property name="height-request">100</property>
+            </object>
+          </child>
+        </object>
+      </child>
+    </object>
+    </child>
+  </object>
+</interface>
