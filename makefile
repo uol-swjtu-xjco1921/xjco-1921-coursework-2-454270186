@@ -14,7 +14,7 @@ run:
 
 .PHONY: clean
 clean:
-	rm -rf build
+	rm -rf build map.png shortest.png fastest.png location.png
 
 test:
 	gcc plplot.c -o plplot `pkg-config --cflags --libs gtk+-3.0`

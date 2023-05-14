@@ -232,28 +232,108 @@ int mod_link_attri(const char* filename, int64_t link_id, char* attri_name, doub
         return -1;
     }
 
-    char line[MAX_LINE_LENGTH];
-    FILE* mod_link_fd = fopen(filename, "rw");
-
-    while (fgets(line, MAX_LINE_LENGTH, mod_link_fd)) {
-        char* token = strtok(line, " ");
-        int64_t cur_link_id = 0;
-        double cur_attri_val = 0.0;
-
-        while (token != NULL) {
-            if (strncmp(token, "id=", 3) == 0) {
-                cur_link_id = atol(token + 3);
-            } else if (strncmp(token, "speed=", 6) == 0) {
-                cur_attri_val = atof(token + 6);
-            }
-
-            token = strtok(NULL, " ");
-        }
-
-        if (cur_link_id == link_id) {
-            cur_attri_val = attri_val;
-        }
-
-        
+    if (check_edge_existence(&edges, link_id) == -1) {
+        log_error("link with id [%ld] does not exist", link_id);
+        return -1;
     }
+
+    if (strcmp(attri_name, "id") == 0 || strcmp(attri_name, "node") == 0 || 
+        strcmp(attri_name, "way") == 0 || strcmp(attri_name, "POI") == 0) {
+            log_error("link attribute type [%s] can not be modified", attri_name);
+            return -1;
+        }
+    
+    FILE* mod_link_fd = fopen(filename, "r+");
+    FILE* temp_fd = tmpfile();
+
+    char target_link[20];
+    sprintf(target_link, "%ld", link_id);
+
+    char line[MAX_LINE_LENGTH];
+    long cur_pos = ftell(mod_link_fd);
+    while (fgets(line, MAX_LINE_LENGTH, mod_link_fd) != NULL) {
+        if (check_type(line) != LINK) {
+            fputs(line, temp_fd);
+            continue;
+        }
+
+        char line_copy[MAX_LINE_LENGTH];
+        strcpy(line_copy, line);
+        
+        if (get_link_id(line_copy) != link_id) {
+            cur_pos = ftell(mod_link_fd);
+            fputs(line, temp_fd);
+            continue;
+        }
+
+        char new_attri_val[50];
+        sprintf(new_attri_val, "%lf", attri_val);
+        char temp_attri_name[20];
+        strcpy(temp_attri_name, attri_name);
+        strcat(temp_attri_name, "=");
+        char* attri_ptr = strstr(line_copy, temp_attri_name);
+
+        if (attri_ptr != NULL) {
+            char* value_start = strchr(attri_ptr, '=');
+
+            if (value_start != NULL) {
+                value_start++;
+                char* value_end;
+                if (strcmp(attri_name, "POI") == 0) {
+                    value_end = strpbrk(value_start, ";");
+                } else {
+                    value_end = strpbrk(value_start, " ");
+                }
+                
+                if (value_end != NULL) {
+                    int new_val_len = strlen(new_attri_val);
+                    int ori_val_len = value_end - value_start;
+
+                    if (new_val_len <= ori_val_len) {
+                        strncpy(value_start, new_attri_val, new_val_len);
+                    } else {
+                        int diff = new_val_len - ori_val_len;
+                        memmove(value_end + diff, value_end, strlen(value_end) + 1);
+                        strncpy(value_start, new_attri_val, new_val_len);
+                    }
+                }
+            }
+            // fseek(mod_link_fd, cur_pos, SEEK_SET);
+            // printf("%s\n", line_copy);
+            // fprintf(mod_link_fd, "%s", line_copy);
+            // break;
+        } else if (strcmp(attri_name, "speed") == 0) {
+            // 如果没有此属性
+            char* length_attri_ptr = strstr(line_copy, "length=");
+
+            if (length_attri_ptr != NULL) {
+                char* insert_pos = strchr(length_attri_ptr, ' ');
+
+                if (insert_pos != NULL) {
+                    insert_pos++;
+                    char new_attri_line[MAX_LINE_LENGTH];
+                    sprintf(new_attri_line, "speed=%lf ", attri_val);
+                    size_t insert_pos_offset = insert_pos - line_copy;
+                    memmove(insert_pos + strlen(new_attri_line), insert_pos, strlen(line_copy) - insert_pos_offset + 1);
+                    strncpy(insert_pos, new_attri_line, strlen(new_attri_line));
+                }
+            }
+        }
+
+        fprintf(temp_fd, "%s", line_copy);
+        cur_pos = ftell(mod_link_fd);
+    }
+
+
+    // 将临时文件的内容复制回原始文件
+    rewind(mod_link_fd);
+    rewind(temp_fd);
+    char temp_line[MAX_LINE_LENGTH];
+    while (fgets(temp_line, MAX_LINE_LENGTH, temp_fd) != NULL) {
+        fputs(temp_line, mod_link_fd);
+    }
+
+    fclose(temp_fd);
+    fclose(mod_link_fd);
+    return 0;
 }

@@ -10,6 +10,7 @@
 #include "fileio.h"
 #include "utility.h"
 #include "errhandler.h"
+#include "init.h"
 
 GtkBuilder* builder;
 GObject* window;
@@ -222,15 +223,25 @@ void deal_edit_input() {
         error_window_renderer();
         return;
     }
-    printf("%ld %s %lf\n", link_id, attri_name, attri_val);
+
     if (check_edge_existence(&edges, link_id) == -1) {
         log_error("link %ld does not exist", link_id);
-        window_quit();
+        error_window_renderer();
         return;
     }
 
-    
+    ret = mod_link_attri(filename, link_id, attri_name, attri_val);
+    if (ret != 0) {
+        log_error("ERROR while modify link attribute");
+        error_window_renderer();
+        return;
+    }
 
+    log_info("Successfully modify link attribute [%s]'s value to [%lf]", attri_name, attri_val);
+
+    refresh();
+
+    gtk_widget_hide(GTK_WIDGET(edit_window));
 }
 
 void map_back_to_main() {

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdint.h>
+#include <stdlib.h>
 #include "utility.h"
 
 /// @brief Trim spaces at the beginning and end of a string
@@ -21,4 +23,30 @@ char* trim_space(char* str) {
 
     memmove(str, str_start, len + 1);
     return str;
+}
+
+
+int64_t get_link_id(const char* str) {
+    const char* start = strstr(str, "id=");
+
+    if (start != NULL) {
+        start += 3; // skip "id="
+        const char* end = strchr(start, ' ');
+
+        if (end != NULL) {
+            size_t length = end - start;
+
+            char* linkIdStr = (char*)malloc(length + 1);
+            strncpy(linkIdStr, start, length);
+            linkIdStr[length] = '\0';
+
+            int64_t linkId = strtoll(linkIdStr, NULL, 10);
+
+            free(linkIdStr);
+
+            return linkId;
+        }
+    }
+
+    return 0;
 }

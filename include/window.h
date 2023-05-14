@@ -13,6 +13,7 @@ extern node_vector path;
 extern Node* node_table[];
 extern Node* adj_table[];
 extern Node* spd_adj_table[];
+extern char* filename;
 
 /* run */
 void window_start();
