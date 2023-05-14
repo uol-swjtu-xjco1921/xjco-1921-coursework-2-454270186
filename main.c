@@ -41,6 +41,13 @@ int main(int argc, char** argv) {
         return -1;
     }
 
+    // if (check_edge_existence(&edges, -214339522) == 1) {
+    //     INFO("exist");
+    // } else {
+    //     ERROR("not found");
+    // }
+    // return 0;
+
     // path = dijkstra(&nodes, spd_adj_table, node_table, 21069423, 244449810);
     // if (path.size == 0) {
     //     ERROR("Unexpect internal error while find shortest route");

@@ -14,10 +14,6 @@ extern Node* node_table[];
 extern Node* adj_table[];
 extern Node* spd_adj_table[];
 
-
-/* init */
-
-
 /* run */
 void window_start();
 void window_clear();
@@ -33,6 +29,7 @@ void get_loc_renderer();
 void shortest_window_renderer();
 void fastest_window_renderer();
 void constraint_window_renderer();
+void edit_window_renderer();
 void loc_shortest_window_renderer();
 void error_window_renderer();
 
@@ -44,8 +41,10 @@ void deal_input();
 void deal_fast_input();
 void deal_s_e_loc_input();
 void deal_loc_input();
+void deal_edit_input();
 void hide_error();
 void hide_cons();
 void hide_loc_input();
+void hide_edit();
 
 #endif

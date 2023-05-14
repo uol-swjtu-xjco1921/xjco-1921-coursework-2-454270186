@@ -40,3 +40,13 @@ int check_line_fmt(const char* line, const char* prefix, const char* suffix) {
 
     return 0;
 }
+
+int check_edge_existence(edge_vector* edges, int64_t link_id) {
+    for (int i = 0; i < edges->size; i++) {
+        if (edges->edges[i].id == link_id) {
+            return 1;
+        }
+    }
+
+    return -1;
+}

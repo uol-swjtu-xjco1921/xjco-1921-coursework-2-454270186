@@ -111,9 +111,9 @@ int read_edge(char* buf, edge_vector* edges, Node* adj_table[], Node* spd_table[
 
     char* token = strtok(buf, "= ");
     while (token != NULL) {
-        if (strcmp(token, "id") == 0) {
+        if (strcmp(token, "<link") == 0) {
             token = strtok(NULL, " ");
-            sscanf(token, "%ld", &edge.id);
+            sscanf(token, "id=%ld", &edge.id);
         } else if (strcmp(token, "node") == 0 ) {
             token = strtok(NULL, " ");
             if (edge.from == 0) {
@@ -151,6 +151,7 @@ int read_edge(char* buf, edge_vector* edges, Node* adj_table[], Node* spd_table[
     adj_insert(spd_table, edge.to, edge.from, edge.speed);
 
     e_vector_push_back(edges, edge);
+    // printf("edge %ld %ld %ld %lf pushed\n", edge.id, edge.from, edge.to, edge.length);
     return 0;
 }
 
@@ -225,14 +226,34 @@ int add_link(const char* filename) {
     return 0;
 }
 
-int add_speed_lim(const char* filename) {
+int mod_link_attri(const char* filename, int64_t link_id, char* attri_name, double attri_val) {
     if (access(filename, F_OK) != 0) {
         log_error("File does not exist");
         return -1;
     }
 
-    FILE* add_speed_fd = fopen(filename, "a");
-    fseek(add_speed_fd, 0, SEEK_END);
+    char line[MAX_LINE_LENGTH];
+    FILE* mod_link_fd = fopen(filename, "rw");
 
-    
+    while (fgets(line, MAX_LINE_LENGTH, mod_link_fd)) {
+        char* token = strtok(line, " ");
+        int64_t cur_link_id = 0;
+        double cur_attri_val = 0.0;
+
+        while (token != NULL) {
+            if (strncmp(token, "id=", 3) == 0) {
+                cur_link_id = atol(token + 3);
+            } else if (strncmp(token, "speed=", 6) == 0) {
+                cur_attri_val = atof(token + 6);
+            }
+
+            token = strtok(NULL, " ");
+        }
+
+        if (cur_link_id == link_id) {
+            cur_attri_val = attri_val;
+        }
+
+        
+    }
 }

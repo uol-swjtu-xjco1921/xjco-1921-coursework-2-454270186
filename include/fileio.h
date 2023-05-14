@@ -25,7 +25,6 @@ DATA_TYPE check_type(const char* buf);
     FILE Write
 */
 int add_link(const char* filename);
-int add_speed_lim(const char* filename);
-int modify_speed_lim(const char* filename);
+int mod_link_attri(const char* filename, int64_t link_id, char* attri_name, double attri_val);
 
 #endif
