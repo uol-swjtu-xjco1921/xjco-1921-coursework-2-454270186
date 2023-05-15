@@ -2,8 +2,11 @@
 #define _ERR_HANDLER
 #include "vector.h"
 
+#define USAGE 0
 #define WRONG_PREFIX -1
 #define WRONG_SUFFIX -2
+#define BAD_ARG_COUNT -3
+#define BAD_FILE_NAME -4
 
 void check_cmd_arg(int argc, char** argv);
 int check_line_fmt(const char* line, const char* prefix, const char* suffix);

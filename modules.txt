@@ -7,8 +7,12 @@ My project has these modules:
 6. heap
 7. drawer
 8. pathfinder
-9. log
+9. log and logger
 10. test
+11. init
+12. utility
+13. window
+14. ui
 --------------------------------
 
 1. main
@@ -85,11 +89,30 @@ Including:
 9. log
 A lightweight third-party log library.
 Used for printing information, warnings, errors.
+Print the status of the program on the terminal while it is running.
 It can more conveniently record the running status of the program.
 
-10. test (not yet implemented)
+10. test
 This modules is used to provide test interfaces including Unit test and Integration test. 
 
 Customize error data and edge conditions to test the
 functionality of the program, and print standardized
 and clear error information to assist in debugging.
+
+11. init
+The init module is responsible for clearing the status of the program.
+(1) init(): Initialize all data structures
+(2) clear(): Release all data structures
+(3) refresh(): Reload file to data structure
+
+12. utility
+Some practical tools:
+Trim string spaces, obtain link id, and determine whether the string is empty
+
+13. window
+The window module is responsible for rendering and user interaction graphics windows.
+Development based on <gtk> library
+
+14. ui
+In the UI folder, 
+Some XML files responsible for window rendering.

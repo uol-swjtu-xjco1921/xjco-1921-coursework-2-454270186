@@ -6,14 +6,19 @@ In unit testing:
 it will test the data reading and storing functionality,
 the algorithm to compute the best route,
 the visualization of the data,
-and the editing of the map attributes.
+the editing of the map attributes,
+and the functionality of all datastructures
 
 In integrating testing:
 it will testing the inteaction between different moduls like:
 1. the interaction between the data reading and storing functionality and the algorithm to compute the best route
 2. the interaction between the algorithm and the visualization of the data
-3. nteraction between the editing of the map attributes and the data storage functionality
+3. interaction between the editing of the map attributes and the data storage functionality
+4. Can the program handle error files correctly
+I tested several cases of illegal user input on the command line in [test.sh].
 
 The testing will involve both automated and manual testing methods to ensure that the 
 program is functioning correctly. Any issues identified during testing will be documented, 
 and the necessary fixes will be made to ensure that the program is functioning correctly.
+
+PS: Because the program is for graphical interaction, some functions can only be manually tested.

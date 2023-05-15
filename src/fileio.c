@@ -3,6 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "log.h"
 #include "fileio.h"
 #include "errhandler.h"
@@ -16,15 +17,15 @@ int64_t last_link_id = 0;
 int read_file(const char* filename, Node* node_table[], Node* adj_table[], Node* spd_adj_table[], edge_vector* edges, node_vector* nodes, Bound* bd){
     FILE* map_file = fopen(filename, "r");
     if (map_file == NULL) {
-        //perror("map file open");
-        log_error("Failed while open file %s", filename);
-        exit(-1);
+        printf("ERROR: Bad File Name\n");
+        exit(BAD_FILE_NAME);
     }
 
     char buf[MAX_LINE_LENGTH];
     int ret = -1;
     int line_cnt = 1;
     while (fgets(buf, MAX_LINE_LENGTH, map_file)) {
+        if (is_blank_or_empty(buf) == 1) continue;
         DATA_TYPE type = check_type(buf);
         //printf("type is %d\n", type);
         switch (type) {
@@ -49,8 +50,13 @@ int read_file(const char* filename, Node* node_table[], Node* adj_table[], Node*
                 }
                 break;
 
+            case ELSE:
+                break;
+
             default:
-                //log_warn("Unknown type at line %d in file %s", line_cnt, filename);
+                printf("%s\n", buf);
+                log_warn("Unknown type at line %d in file %s", line_cnt, filename);
+                return -1;
         }
 
         line_cnt++;
@@ -66,6 +72,8 @@ DATA_TYPE check_type(const char* buf) {
     if (strcmp(substr, "<bounding") == 0) return BOUND;
     if (strcmp(substr, "<link") == 0) return LINK;
     if (strcmp(substr, "<node") == 0) return NODE;
+    if (strcmp(substr, "<way") == 0) return ELSE;
+    if (strcmp(substr, "<geom") == 0) return ELSE;
 
     return -1;
 }
@@ -105,8 +113,10 @@ int read_edge(char* buf, edge_vector* edges, Node* adj_table[], Node* spd_table[
     }
 
     Edge edge;
+    edge.id = 0;
     edge.from = edge.to = 0;
     edge.speed = 10;
+    edge.length = 0.0;
     memset(edge.POI, 0, sizeof(edge.POI));
 
     char* token = strtok(buf, "= ");
@@ -141,6 +151,11 @@ int read_edge(char* buf, edge_vector* edges, Node* adj_table[], Node* spd_table[
 
         token = strtok(NULL, "=");
     }
+
+    if (edge.id == 0 || edge.from == 0 || edge.to == 0 || edge.length == 0.0) {
+        log_error("missing necessary attributes");
+        return -1;
+    }
     
     // insert length adjacent hashtable
     adj_insert(adj_table, edge.from, edge.to, edge.length);
@@ -170,9 +185,9 @@ int read_node(const char* buf, node_vector* nodes, Node* node_table[]) {
 
     int64_t id = -1;
     double lat = -1, lon = -1;
-    sscanf(buf,
-           "<node id=%ld lat=%lf lon=%lf /node>\n",
-           &id, &lat, &lon);
+    ret = sscanf(buf,
+                 "<node id=%ld lat=%lf lon=%lf /node>\n",
+                 &id, &lat, &lon);
     assert(id != -1 && lat != -1 && lon != -1);
     
     Node node;
@@ -298,12 +313,8 @@ int mod_link_attri(const char* filename, int64_t link_id, char* attri_name, doub
                     }
                 }
             }
-            // fseek(mod_link_fd, cur_pos, SEEK_SET);
-            // printf("%s\n", line_copy);
-            // fprintf(mod_link_fd, "%s", line_copy);
-            // break;
+
         } else if (strcmp(attri_name, "speed") == 0) {
-            // 如果没有此属性
             char* length_attri_ptr = strstr(line_copy, "length=");
 
             if (length_attri_ptr != NULL) {
@@ -325,7 +336,7 @@ int mod_link_attri(const char* filename, int64_t link_id, char* attri_name, doub
     }
 
 
-    // 将临时文件的内容复制回原始文件
+    // Copy the contents of the temporary file back to the original file
     rewind(mod_link_fd);
     rewind(temp_fd);
     char temp_line[MAX_LINE_LENGTH];

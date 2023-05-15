@@ -50,3 +50,21 @@ int64_t get_link_id(const char* str) {
 
     return 0;
 }
+
+/// @brief Determine whether a string is a space or empty character
+/// @param str 
+/// @return 1 if is blank or empty
+int is_blank_or_empty(const char* str) {
+    if (strlen(str) == 0) {
+        return 1;
+    }
+
+    int i;
+    for (i = 0; str[i] != '\0'; i++) {
+        if (!isspace((unsigned char)str[i])) {
+            return 0;
+        }
+    }
+
+    return 1;
+}

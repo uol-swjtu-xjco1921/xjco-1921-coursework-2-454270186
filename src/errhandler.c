@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "errhandler.h"
 #include "log.h"
 #include "hashtable.h"
@@ -11,11 +12,15 @@
 void check_cmd_arg(int argc, char** argv){
     if (argc != 2) {
         if (argc == 1) {
-            printf("Usage: ./main <mapfile>\n");
-            exit(-1);
+            printf("Usage: ./build/main <mapfile>\n");
+            exit(USAGE);
         }
-        fprintf(stderr, "Wrong arguement count\n");
-        exit(-1);
+        printf("ERROR: Bad Argument Count\n");
+        exit(BAD_ARG_COUNT);
+    }
+    if (access(argv[1], F_OK) != 0) {
+        printf("ERROR: Bad File Name\n");
+        exit(BAD_FILE_NAME);
     }
 
     log_info("File: %s is valid\n", argv[1]);

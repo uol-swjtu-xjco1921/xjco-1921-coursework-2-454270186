@@ -24,6 +24,8 @@ void e_vector_push_back(edge_vector* e_vector, Edge edge) {
 
 void e_vector_free(edge_vector* e_vector) {
     free(e_vector->edges);
+    e_vector->size = 0;
+    e_vector->capacity = 0;
     log_info("edge vector freed");
 }
 
@@ -55,5 +57,7 @@ void n_vector_append(node_vector* dest, node_vector* src) {
 
 void n_vector_free(node_vector* n_vector) {
     free(n_vector->nodes);
+    n_vector->size = 0;
+    n_vector->capacity = 0;
     log_info("node vector freed");
 }

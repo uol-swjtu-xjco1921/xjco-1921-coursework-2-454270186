@@ -7,16 +7,20 @@ all: build
 build:
 	mkdir -p build
 	cd build && \
-	cmake .. && \
+	cmake -DRUN_MODE=1 .. && \
+	make
+
+.PHONY: test
+test:
+	mkdir -p build
+	cd build && \
+	cmake -DRUN_MODE=0 .. && \
 	make
 
 .PHONY: run
 run:
-	./build/http_server
+	./build/main
 
 .PHONY: clean
 clean:
 	rm -rf build ${PNG_FIlE}
-
-test:
-	gcc plplot.c -o plplot `pkg-config --cflags --libs gtk+-3.0`
