@@ -111,7 +111,18 @@ void deal_input() {
     // int64_t start = 0, end = 0;
     int ret = sscanf(input, "%ld %ld", &start, &end);
     if (ret != 2) {
-        // TODO: 展示错误页面
+        // ERROR
+        log_error("invalid input [%s]", input);
+        error_window_renderer();
+        return;
+    }
+
+    if (check_node_existence(node_table, start) == -1) {
+        log_error("node with id [%ld] does not exist", start);
+        error_window_renderer();
+        return;
+    } else if (check_node_existence(node_table, end) == -1) {
+        log_error("node with id [%ld] does not exist", end);
         error_window_renderer();
         return;
     }
@@ -133,7 +144,18 @@ void deal_fast_input() {
     // int64_t start = 0, end = 0;
     int ret = sscanf(input, "%ld %ld", &start, &end);
     if (ret != 2) {
-        // TODO: 展示错误页面
+        // ERROR
+        log_error("invalid input [%s]", input);
+        error_window_renderer();
+        return;
+    }
+
+    if (check_node_existence(node_table, start) == -1) {
+        log_error("node with id [%ld] does not exist", start);
+        error_window_renderer();
+        return;
+    } else if (check_node_existence(node_table, end) == -1) {
+        log_error("node with id [%ld] does not exist", end);
         error_window_renderer();
         return;
     }
@@ -154,10 +176,21 @@ void deal_s_e_loc_input() {
     if (start == 0 && end == 0) {
        int ret = sscanf(input, "%ld %ld", &start, &end);
         if (ret != 2) {
-            // TODO: 展示错误页面
+            // ERROR
+            log_error("invalid input [%s]", input);
             error_window_renderer();
             return;
         } 
+    }
+
+    if (check_node_existence(node_table, start) == -1) {
+        log_error("node with id [%ld] does not exist", start);
+        error_window_renderer();
+        return;
+    } else if (check_node_existence(node_table, end) == -1) {
+        log_error("node with id [%ld] does not exist", end);
+        error_window_renderer();
+        return;
     }
     
     get_loc_renderer();
@@ -179,6 +212,11 @@ void deal_loc_input() {
             error_window_renderer();
             return;
         }
+        if (check_node_existence(node_table, node_id) == -1) {
+            log_error("node with id [%ld] does not exist", node_id);
+            error_window_renderer();
+            return;
+        }
     } else {
         // location
         double lat, lon;
@@ -192,6 +230,7 @@ void deal_loc_input() {
         node_id = search_by_loc(node_table, lat, lon);
         if (node_id == 0) {
             // ERROR
+            log_error("node with location [%lf],[%lf] does not exist", lat, lon);
             error_window_renderer();
             return;
         }
@@ -222,6 +261,7 @@ void deal_edit_input() {
     int ret = sscanf(input, "%ld %19s %lf", &link_id, attri_name, &attri_val);
     if (ret != 3) {
         // ERROR
+        log_error("invalid input [%s]", input);
         error_window_renderer();
         return;
     }
@@ -252,6 +292,21 @@ void deal_poi_input() {
 
     int ret = sscanf(input, "%ld %ld %d", &start, &end, &target_poi);
     if (ret != 3) {
+        log_error("invalid input [%s]", input);
+        error_window_renderer();
+        return;
+    }
+
+    if (check_node_existence(node_table, start) == -1) {
+        log_error("node with id [%ld] does not exist", start);
+        error_window_renderer();
+        return;
+    } else if (check_node_existence(node_table, end) == -1) {
+        log_error("node with id [%ld] does not exist", end);
+        error_window_renderer();
+        return;
+    } else if (check_POI_existence(&edges, target_poi) == -1) {
+        log_error("POI [%d] dose not exist", target_poi);
         error_window_renderer();
         return;
     }

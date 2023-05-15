@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "errhandler.h"
 #include "log.h"
+#include "hashtable.h"
 
 /// @brief 
 /// @param argc 
@@ -45,6 +46,28 @@ int check_edge_existence(edge_vector* edges, int64_t link_id) {
     for (int i = 0; i < edges->size; i++) {
         if (edges->edges[i].id == link_id) {
             return 1;
+        }
+    }
+
+    return -1;
+}
+
+int check_node_existence(Node* node_table[], int64_t node_id) {
+    Node* node = search(node_table, node_id);
+    if (node == NULL) {
+        return -1;
+    }
+
+    return 1;
+}
+
+int check_POI_existence(edge_vector* edges, int POI) {
+    for (int i = 0; i < edges->size; i++) {
+        for (int j = 0; j < 20; j++) {
+            if (edges->edges[i].POI[j] == 0) break;
+            if (edges->edges[i].POI[j] == POI) {
+                return 1;
+            }
         }
     }
 

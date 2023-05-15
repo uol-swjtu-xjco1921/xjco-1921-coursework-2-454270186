@@ -8,5 +8,7 @@
 void check_cmd_arg(int argc, char** argv);
 int check_line_fmt(const char* line, const char* prefix, const char* suffix);
 int check_edge_existence(edge_vector* edges, int64_t link_id);
+int check_node_existence(Node* node_table[], int64_t node_id);
+int check_POI_existence(edge_vector* edges, int POI);
 
 #endif

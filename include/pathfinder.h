@@ -11,7 +11,6 @@
     External interface
 */
 node_vector print_path(Node* pre_table[], Node* node_table[], int64_t start_node_id, int64_t end_node_id);
-int find_path();
 
 /*
     Dijkstra

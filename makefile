@@ -1,3 +1,5 @@
+PNG_FIlE = map.png shortest.png fastest.png location.png shortest_poi.png
+
 .PHONY: all
 all: build
 
@@ -14,7 +16,7 @@ run:
 
 .PHONY: clean
 clean:
-	rm -rf build map.png shortest.png fastest.png location.png
+	rm -rf build ${PNG_FIlE}
 
 test:
 	gcc plplot.c -o plplot `pkg-config --cflags --libs gtk+-3.0`
