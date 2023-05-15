@@ -41,11 +41,22 @@ int main(int argc, char** argv) {
         log_error("Failed while read map file (%s)", filename);
         return -1;
     }
-    // for (int i = 0; i < edges.size; i++) {
-    //     printf("edge %ld length is %lf\n", edges.edges[i].id, edges.edges[i].length);
-    // }
-    // mod_link_attri(filename, -2143392665, "speed", 666);
+
+    // path = dijk_poi(&nodes, adj_table, node_table, &edges, 8, 1701812266, 920423604);
+    // draw_path(&bd, &path, &edges, node_table, 0);
+
+    // clear();
     // return 0;
+    // for (int i = 0; i < edges.size; i++) {
+    //     printf("edge poi is ");
+    //     for (int j = 0; j < 20; j++) {
+    //         if (edges.edges[i].POI[j] == 0) break;
+    //         printf("%d ", edges.edges[i].POI[j]);
+    //     }
+    //     printf("\n");
+    // }
+    // return 0;
+
     // clear();
     // init();
     // printf("------------------------------\n");

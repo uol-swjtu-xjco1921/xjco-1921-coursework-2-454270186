@@ -206,12 +206,9 @@ void vis_insert(Vis_node* table[], int64_t node_id) {
     node->node_id = node_id;
     
     if (table[index] == NULL) {
-        printf("zhijie insert\n");
         table[index] = node;
-        printf("node_id is %ld\n", node->node_id);
         node->next = NULL;
     } else {
-        printf("head insert\n");
         node->next = table[index];
         table[index] = node;
     }
@@ -220,21 +217,13 @@ void vis_insert(Vis_node* table[], int64_t node_id) {
 int is_node_visited(Vis_node* table[], int64_t node_id) {
     for (int i = 0; i < TABLE_SIZE; i++) {
         if (table[i] == NULL) {
-            // printf("table[%d] is NULL, continue\n", i);
             continue;
         }
-        // printf("table[%d] is not NULL, got it\n", i);
+
         Vis_node* n = table[i];
-        // printf("node is : %ld\n", n->node_id);
-        // printf("search for node_id %ld\n", node_id);
-        // printf("%s\n", (n == NULL) ? "n is NULL" : "n is not NULL");
-        // printf("------------in th while-----------------\n");
+
         while (n != NULL) {
-            // printf("in the while %s\n", (n == NULL) ? "n is NULL" : "n is not NULL");
-            // printf("node is : %ld\n", n->node_id);
-            // printf("search for node_id %ld\n", node_id);
             if (n->node_id == node_id) {
-                // printf("equal\n");
                 return 1;
             }
 

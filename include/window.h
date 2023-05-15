@@ -27,11 +27,13 @@ void get_input_renderer();
 void get_input_fast_renderer();
 void get_input_loc_renderer();
 void get_loc_renderer();
+void get_POI_window_renderer();
 void shortest_window_renderer();
 void fastest_window_renderer();
 void constraint_window_renderer();
 void edit_window_renderer();
 void loc_shortest_window_renderer();
+void poi_shortest_window_renderer();
 void error_window_renderer();
 
 /* Callback func */
@@ -43,6 +45,7 @@ void deal_fast_input();
 void deal_s_e_loc_input();
 void deal_loc_input();
 void deal_edit_input();
+void deal_poi_input();
 void hide_error();
 void hide_cons();
 void hide_loc_input();

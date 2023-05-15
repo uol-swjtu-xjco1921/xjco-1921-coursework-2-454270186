@@ -16,7 +16,7 @@ int draw_edges(Bound* bd, edge_vector* edges, Node* table[]) {
     plinit();
     log_info("plplot initialized");
 
-    plenv(bd->min_lon, bd->max_lon, bd->min_lat, bd->max_lat, 0, 0);
+    plenv(bd->min_lon-0.001, bd->max_lon+0.001, bd->min_lat-0.001, bd->max_lat+0.001, 0, 0);
     pllab("", "", "Map");
 
     for (int i = 0; i < edges->size; i++) {
@@ -54,18 +54,22 @@ int draw_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[], i
     plsdev("png");
     if(mode == 0) {
         plsfnam("shortest.png"); 
-    } else {
+    } else if (mode == 1) {
         plsfnam("fastest.png");
+    } else if (mode == 2) {
+        plsfnam("shortest_poi.png");
     }
     plprec(1, 3);
     plinit();
     log_info("plplot initialized");
 
-    plenv(bd->min_lon, bd->max_lon, bd->min_lat, bd->max_lat, 0, 0);
+    plenv(bd->min_lon-0.001, bd->max_lon+0.001, bd->min_lat-0.001, bd->max_lat+0.001, 0, 0);
     if (mode == 0) {
         pllab("", "", "Shortest Route");
-    } else {
+    } else if (mode == 1) {
         pllab("", "", "Fastest Route");
+    } else if (mode == 2) {
+        pllab("", "", "Shortest Route with POI");
     }
 
     for (int i = 0; i < edges->size; i++) {
@@ -120,7 +124,7 @@ int draw_loc_path(Bound* bd, node_vector* path_1, node_vector* path_2, edge_vect
     plinit();
     log_info("plplot initialized");
 
-    plenv(bd->min_lon, bd->max_lon, bd->min_lat, bd->max_lat, 0, 0);
+    plenv(bd->min_lon-0.001, bd->max_lon+0.001, bd->min_lat-0.001, bd->max_lat+0.001, 0, 0);
     pllab("", "", "Shortest Route");
 
     for (int i = 0; i < edges->size; i++) {

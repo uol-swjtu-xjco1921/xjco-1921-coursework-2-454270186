@@ -16,6 +16,7 @@ int find_path();
 /*
     Dijkstra
 */
-node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], int64_t start_node_id, int64_t end_node_id);
+node_vector dijkstra(node_vector* nodes, Node* adj_table[], Node* node_table[], int64_t start_node_id, int64_t end_node_id, double* final_dis);
+node_vector dijk_poi(node_vector* nodes, Node* adj_table[], Node* node_table[], edge_vector* edges, int target_poi, int64_t start, int64_t end);
 
 #endif

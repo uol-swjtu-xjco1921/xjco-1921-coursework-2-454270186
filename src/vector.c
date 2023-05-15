@@ -47,6 +47,12 @@ void n_vector_push_back(node_vector* n_vector, Node node) {
     n_vector->nodes[n_vector->size++] = node;
 }
 
+void n_vector_append(node_vector* dest, node_vector* src) {
+    for (int i = 0; i < src->size; i++) {
+        n_vector_push_back(dest, src->nodes[i]);
+    }
+}
+
 void n_vector_free(node_vector* n_vector) {
     free(n_vector->nodes);
     log_info("node vector freed");

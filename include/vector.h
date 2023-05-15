@@ -21,5 +21,6 @@ typedef struct {
 void n_vector_init(node_vector* n_vector, int capacity);
 void n_vector_push_back(node_vector* n_vector, Node node);
 void n_vector_free(node_vector* n_vector);
+void n_vector_append(node_vector* dest, node_vector* src);
 
 #endif

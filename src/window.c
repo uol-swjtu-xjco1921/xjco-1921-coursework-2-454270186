@@ -18,10 +18,12 @@ GObject* map_window;
 GObject* shortest_window;
 GObject* fastest_window;
 GObject* loc_shortest_window;
+GObject* poi_shortest_window;
 GObject* input_window;
 GObject* loc_input_window;
 GObject* cons_window;
 GObject* edit_window;
+GObject* get_poi_window;
 GObject* error_window;
 GObject* button;
 GObject* entry;
@@ -115,7 +117,7 @@ void deal_input() {
     }
 
     // shortest route
-    path = dijkstra(&nodes, adj_table, node_table, start, end);
+    path = dijkstra(&nodes, adj_table, node_table, start, end, NULL);
     if (path.size == 0) {
         ERROR("Unexpect internal error while find shortest route");
         window_quit();
@@ -137,7 +139,7 @@ void deal_fast_input() {
     }
 
     // fastest route
-    path = dijkstra(&nodes, spd_adj_table, node_table, start, end);
+    path = dijkstra(&nodes, spd_adj_table, node_table, start, end, NULL);
     if (path.size == 0) {
         ERROR("Unexpect internal error while find fastest route");
         window_quit();
@@ -197,8 +199,8 @@ void deal_loc_input() {
 
     node_vector path_2;
     n_vector_init(&path_2, 10);
-    path = dijkstra(&nodes, adj_table, node_table, start, node_id);
-    path_2 = dijkstra(&nodes, adj_table, node_table, node_id, end);
+    path = dijkstra(&nodes, adj_table, node_table, start, node_id, NULL);
+    path_2 = dijkstra(&nodes, adj_table, node_table, node_id, end, NULL);
     if (path.size == 0 || path_2.size == 0) {
         ERROR("Unexpect internal error while find shortest route");
         return;
@@ -244,6 +246,24 @@ void deal_edit_input() {
     gtk_widget_hide(GTK_WIDGET(edit_window));
 }
 
+void deal_poi_input() {
+    const gchar* input = gtk_entry_get_text(GTK_ENTRY(entry));
+    int target_poi = -1;
+
+    int ret = sscanf(input, "%ld %ld %d", &start, &end, &target_poi);
+    if (ret != 3) {
+        error_window_renderer();
+        return;
+    }
+
+    path = dijk_poi(&nodes, adj_table, node_table, &edges, target_poi, start, end);
+    draw_path(&bd, &path, &edges, node_table, 2);
+
+    gtk_widget_hide(GTK_WIDGET(cons_window));
+    gtk_widget_hide(GTK_WIDGET(get_poi_window));
+    poi_shortest_window_renderer();
+}
+
 void map_back_to_main() {
     gtk_widget_hide(GTK_WIDGET(map_window));
     gtk_widget_show(GTK_WIDGET(window));
@@ -264,12 +284,21 @@ void location_back_to_main() {
     gtk_widget_show(GTK_WIDGET(window));
 }
 
+void poi_back_to_main() {
+    gtk_widget_hide(GTK_WIDGET(poi_shortest_window));
+    gtk_widget_show(GTK_WIDGET(window));
+}
+
 void hide_input() {
     gtk_widget_hide(GTK_WIDGET(input_window));
 }
 
 void hide_loc_input() {
     gtk_widget_hide(GTK_WIDGET(loc_input_window));
+}
+
+void hide_poi_input() {
+    gtk_widget_hide(GTK_WIDGET(get_poi_window));
 }
 
 void hide_cons() {
@@ -387,7 +416,7 @@ void constraint_window_renderer() {
     g_signal_connect(button, "clicked", G_CALLBACK(get_input_loc_renderer), NULL);
 
     button = gtk_builder_get_object(builder, "POI");
-    g_signal_connect(button, "clicked", G_CALLBACK(get_input_loc_renderer), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(get_POI_window_renderer), NULL);
 
     button = gtk_builder_get_object(builder, "back_button");
     g_signal_connect(button, "clicked", G_CALLBACK(hide_cons), NULL);
@@ -431,6 +460,23 @@ void loc_shortest_window_renderer() {
     g_signal_connect(button, "clicked", G_CALLBACK(location_back_to_main), NULL);
 
     gtk_widget_show_all(GTK_WIDGET(loc_shortest_window));
+}
+
+void poi_shortest_window_renderer() {
+    builder = gtk_builder_new();
+    if (gtk_builder_add_from_file(builder, "./ui/shortest_poi.xml", &error) == 0) {
+        g_printerr("Error loading ui file: %s\n", error->message);
+        g_clear_error(&error);
+        return;
+    }
+
+    poi_shortest_window = gtk_builder_get_object (builder, "main_window");
+    g_signal_connect (poi_shortest_window, "destroy", G_CALLBACK (window_quit), NULL);
+
+    button = gtk_builder_get_object(builder, "back_button");
+    g_signal_connect(button, "clicked", G_CALLBACK(poi_back_to_main), NULL);
+
+    gtk_widget_show_all(GTK_WIDGET(poi_shortest_window));
 }
 
 void get_input_renderer() {
@@ -521,6 +567,27 @@ void get_input_loc_renderer() {
     g_signal_connect(button, "clicked", G_CALLBACK(deal_s_e_loc_input), NULL);
 
     gtk_widget_show_all(GTK_WIDGET(loc_input_window));
+}
+
+void get_POI_window_renderer() {
+    builder = gtk_builder_new();
+    if (gtk_builder_add_from_file(builder, "./ui/get_poi.xml", &error) == 0) {
+        g_printerr("Error loading ui file: %s\n", error->message);
+        g_clear_error(&error);
+        return;
+    }
+
+    get_poi_window = gtk_builder_get_object (builder, "main_window");
+    g_signal_connect (get_poi_window, "destroy", G_CALLBACK (window_quit), NULL);
+
+    button = gtk_builder_get_object(builder, "back_button");
+    g_signal_connect(button, "clicked", G_CALLBACK(hide_poi_input), NULL);
+
+    entry = gtk_builder_get_object(builder, "entry_input");
+    button = gtk_builder_get_object(builder, "next_button");
+    g_signal_connect(button, "clicked", G_CALLBACK(deal_poi_input), NULL);
+
+    gtk_widget_show_all(GTK_WIDGET(get_poi_window));
 }
 
 void error_window_renderer() {
