@@ -22,7 +22,9 @@ node_vector print_path(Node* pre_table[], Node* node_table[], int64_t start_node
         curr_id = get_pre_node_id(pre_table, curr_id);
         if (curr_id == -1) {
             log_error("there is no path between two points");
-            break;
+            node_vector empty;
+            n_vector_init(&empty, 0);
+            return empty;
         }
     }
     if (curr_id == start_node_id) {

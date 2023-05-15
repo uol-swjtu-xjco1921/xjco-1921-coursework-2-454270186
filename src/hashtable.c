@@ -200,7 +200,6 @@ int64_t get_pre_node_id(Node* table[], int64_t curr_node_id) {
 
 void vis_insert(Vis_node* table[], int64_t node_id) {
     int index = hash_func(node_id);
-    printf("node_id: %ld index: %d\n", node_id, index);
 
     Vis_node* node = (Vis_node*)malloc(sizeof(Vis_node));
     node->node_id = node_id;

@@ -4,12 +4,21 @@
 #include "models.h"
 #include "log.h"
 
+int is_edges_empty(edge_vector* edges) {
+    return edges->size == 0;
+}
+
 /// @brief 
 /// @param bd 
 /// @param edges 
 /// @param table 
 /// @return 
 int draw_edges(Bound* bd, edge_vector* edges, Node* table[]) {
+    if (is_edges_empty(edges)) {
+        log_error("edges is empty");
+        return -1;
+    }
+
     plsdev("png");
     plsfnam("map.png");
     plprec(1, 3);
@@ -51,6 +60,11 @@ int draw_edges(Bound* bd, edge_vector* edges, Node* table[]) {
 }
  
 int draw_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[], int mode) {
+    if (is_edges_empty(edges)) {
+        log_error("edges is empty");
+        return -1;
+    }
+
     plsdev("png");
     if(mode == 0) {
         plsfnam("shortest.png"); 
@@ -118,6 +132,11 @@ int draw_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[], i
 }
 
 int draw_loc_path(Bound* bd, node_vector* path_1, node_vector* path_2, edge_vector* edges, Node* table[]) {
+    if (is_edges_empty(edges)) {
+        log_error("edges is empty");
+        return -1;
+    }
+    
     plsdev("png");
     plsfnam("location.png"); 
     plprec(1, 3);
