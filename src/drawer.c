@@ -4,15 +4,18 @@
 #include "models.h"
 #include "log.h"
 
+/// @brief Determine if there are no edges
+/// @param edges 
+/// @return 
 int is_edges_empty(edge_vector* edges) {
     return edges->size == 0;
 }
 
-/// @brief 
+/// @brief draw the whole map
 /// @param bd 
 /// @param edges 
 /// @param table 
-/// @return 
+/// @return 1 if success, -1 if failed
 int draw_edges(Bound* bd, edge_vector* edges, Node* table[]) {
     if (is_edges_empty(edges)) {
         log_error("edges is empty");
@@ -59,6 +62,9 @@ int draw_edges(Bound* bd, edge_vector* edges, Node* table[]) {
     return 0;
 }
  
+/// @brief draw path
+/// @param mode 0 for shortest, 1 for fastest, 2 for POI
+/// @return 1 if success, -1 if failed
 int draw_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[], int mode) {
     if (is_edges_empty(edges)) {
         log_error("edges is empty");
@@ -131,6 +137,8 @@ int draw_path(Bound* bd, node_vector* path, edge_vector* edges, Node* table[], i
     return 0;
 }
 
+/// @brief draw the shortest path passing given location
+/// @return 1 if success, -1 if failed
 int draw_loc_path(Bound* bd, node_vector* path_1, node_vector* path_2, edge_vector* edges, Node* table[]) {
     if (is_edges_empty(edges)) {
         log_error("edges is empty");
@@ -203,41 +211,5 @@ int draw_loc_path(Bound* bd, node_vector* path_1, node_vector* path_2, edge_vect
 
     log_info("Shortest route (pass given location) drawn successfully");
     plend();
-    return 0;
-}
-
-/// @brief 
-/// @param edges 
-/// @param table 
-/// @return 
-int input_edges(edge_vector* edges, Node* table[]) {
-    FILE* edge_file = fopen("edge.dat", "w");
-    if (edge_file == NULL) {
-        perror("input_edges->fopen()");
-        exit(-1);
-    }
-
-    for (int i = 0; i < edges->size; i++) {
-        int64_t from_id = edges->edges[i].from;
-        int64_t to_id = edges->edges[i].to;
-
-        Node* from = search(table, from_id);
-        if (from == NULL) {
-            printf("can not found node with id %ld\n", from_id);
-            
-            exit(-1);
-        }
-
-        Node* to = search(table, to_id);
-        if (to == NULL) {
-            printf("can not found node with id %ld\n", to_id);
-            exit(-1);
-        }
-
-        fprintf(edge_file, "%lf %lf\n", from->lon, from->lat);
-        fprintf(edge_file, "%lf %lf\n", to->lon, to->lat);
-        fprintf(edge_file, "\n");
-    }
-
     return 0;
 }

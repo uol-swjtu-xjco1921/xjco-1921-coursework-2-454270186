@@ -1,5 +1,6 @@
 #include "init.h"
 
+/// @brief Initialize all data structures
 void init() {
     memset(&bd, 0, sizeof(Bound));
     e_vector_init(&edges, 10);
@@ -11,6 +12,7 @@ void init() {
     }
 }
 
+/// @brief Release all data structures
 void clear() {
     e_vector_free(&edges);
     n_vector_free(&nodes);
@@ -19,6 +21,7 @@ void clear() {
     free_adj_table(adj_table);
 }
 
+/// @brief Reload file to data structure
 void refresh() {
     clear();
     init();
