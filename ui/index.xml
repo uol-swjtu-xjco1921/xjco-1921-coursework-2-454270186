@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.0" />
+
+  <object class="GtkWindow" id="main_window">
+    <property name="title">----Map----</property>
+    <property name="default-width">300</property>
+    <property name="default-height">500</property>
+    <signal name="destroy" handler="on_main_window_destroy" />
+
+    <child>
+      <object class="GtkGrid" id="main_grid">
+        <!-- <property name="orientation">VERTICAL</property> -->
+
+        <child>
+            <object class="GtkLabel" id="title_label">
+                <property name="label">Please select the following options</property>
+            </object>
+            <packing>
+                <property name="top-attach">0</property>
+                <property name="width">1</property>
+            </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="label">1. Draw the map</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="button2">
+            <property name="label">2. Draw the shorest route</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="button3">
+            <property name="label">3. Draw the fast route</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="button4">
+            <property name="label">4. Draw the shorest route (constrain)</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="button5">
+            <property name="label">5. Modify attributes</property>
+            <property name="height-request">100</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">6</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

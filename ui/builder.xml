@@ -1,0 +1,102 @@
+<interface>
+  <object id="window" class="GtkWindow">
+    <property name="visible">True</property>
+    <property name="title">My window</property>
+    <property name="border-width">50</property>
+    <child>
+      <object id="grid" class="GtkGrid">
+        <property name="visible">True</property>
+        <child>
+          <object id="button1" class="GtkButton">
+            <property name="visible">True</property>
+            <property name="label">Shortest route</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+        <child>
+          <object id="button2" class="GtkButton">
+            <property name="visible">True</property>
+            <property name="label">Button 2</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
+            <property name="width">1</property>
+          </packing>
+        </child>
+        <child>
+          <object id="quit" class="GtkButton">
+            <property name="visible">True</property>
+            <property name="label">Quit</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="image">
+            <property name="visible">True</property>
+            <property name="file">map.png</property>
+          </object>
+          <packing>
+            <property name="top-attach">2</property>
+            <property name="left-attach">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+      </packing>
+    </child>
+  </object>
+
+
+  
+
+  <object id="window2" class="GtkWindow">
+    <property name="visible">True</property>
+    <property name="title">My window</property>
+    <property name="border-width">50</property>
+    <child>
+      <object id="grid2" class="GtkGrid">
+        <property name="visible">True</property>
+        <child>
+          <object id="button_show_map" class="GtkButton">
+            <property name="visible">True</property>
+            <property name="label">show map</property>
+          </object>
+          <packing>
+            <property name="top-attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object id="button22" class="GtkButton">
+            <property name="visible">True</property>
+            <property name="label">Show shortest way</property>
+          </object>
+          <packing>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object id="quit2" class="GtkButton">
+            <property name="visible">True</property>
+            <property name="label">Quit</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+      </packing>
+    </child>
+  </object>
+</interface>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.0" />
+
+  <object class="GtkWindow" id="main_window">
+    <property name="title">Shortest Route</property>
+    <property name="default-width">1200</property>
+    <property name="default-height">800</property>
+    <signal name="destroy" handler="on_main_window_destroy" />
+
+    <child>
+      <object class="GtkGrid" id="main_grid">
+        <property name="row-homogeneous">TRUE</property>
+        <property name="column-homogeneous">TRUE</property>
+
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="label">Button 1</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="button2">
+            <property name="label">Button 2</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="back_button">
+            <property name="label">Back</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkImage" id="image">
+            <property name="file">./shortest.png</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
+            <property name="width">3</property>
+            <property name="height">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

@@ -49,3 +49,26 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# vscode
+.vscode
+
+# executable
+main
+
+# todo
+todo.md
+
+# test file
+test.c
+plplot.c
+
+# data stub
+range_x.txt
+range_y.txt
+edge.dat
+
+makefile.test
+
+# cmake
+build
