@@ -31,9 +31,10 @@ In the root directory
 
 **TEST MODE**
 In the root directory
-```bash
-    make test
-```
+
+run ``` make test ``` for unit test,
+run ``` bash tesh.sh ``` for Program startup test
+
 You will see the test results output to the terminal
 
 **clean excutable and all temp file**
