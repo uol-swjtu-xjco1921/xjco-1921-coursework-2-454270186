@@ -15,7 +15,7 @@
 
         <child>
           <object class="GtkButton" id="button1">
-            <property name="label">Button 1</property>
+            <property name="label"></property>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -26,7 +26,7 @@
 
         <child>
           <object class="GtkButton" id="button2">
-            <property name="label">Button 2</property>
+            <property name="label"></property>
           </object>
           <packing>
             <property name="left-attach">0</property>
