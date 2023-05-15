@@ -6,7 +6,7 @@
 #include "log.h"
 #include "hashtable.h"
 
-/// @brief 
+/// @brief check for cmd line arguments
 /// @param argc 
 /// @param argv 
 void check_cmd_arg(int argc, char** argv){
@@ -26,11 +26,11 @@ void check_cmd_arg(int argc, char** argv){
     log_info("File: %s is valid\n", argv[1]);
 }
 
-/// @brief 
+/// @brief check for data format
 /// @param line 
 /// @param prefix 
 /// @param suffix 
-/// @return 
+/// @return WRONG_PREFIX or WRONG_SUFFIX if failed, 0 if success
 int check_line_fmt(const char* line, const char* prefix, const char* suffix) {
     // check prefix
     int ret = strncmp(line, prefix, strlen(prefix));
